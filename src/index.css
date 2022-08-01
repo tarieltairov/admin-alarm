@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +12,79 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.login-form,
+.price-form {
+  min-width: 300px;
+}
+
+.login-form .ant-form-item,
+.price-form .ant-form-item {
+  width: 300px;
+}
+
+.login-form .login-form-button,
+.price-form .login-form-button {
+  width: 100%;
+}
+
+.auth,
+.price {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.auth {
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.ant-layout-header {
+  padding: 0;
+}
+
+.ant-menu-overflow {
+  justify-content: center;
+}
+
+.ant-input-number {
+  width: 100%;
+}
+
+.delete {
+  background-color: red;
+}
+
+.complete {
+  background-color: green;
+}
+
+.delete,
+.complete {
+  cursor: pointer;
+  color: #fff;
+  margin-right: 5px;
+  border-color: white;
+}
+
+.create-guard-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  margin: 0 auto;
+}
+
+.create-guard-form .input {
+  width: 200px;
 }
