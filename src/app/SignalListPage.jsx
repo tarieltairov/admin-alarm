@@ -78,16 +78,22 @@ const SignalListPage = () => {
 
   return (
     <PageLayout>
-      Count: {orderCount}
-      {orderList.map(order => (
-        <Card key={order.id} style={cardStyle}>
-          <p>{order.user.email} </p>
-          <p>Координаты: <b>{order.coordinates?.latitude}</b> <b>{order.coordinates?.longitude}</b></p>
-          <p>Status: <b>{signals[order.status]}</b></p>
-          <button className='delete' onClick={() => onDelete(order.id)}>Удалить заказ</button>
-          <button className='complete' onClick={() => onSubmit(order.id)}>Завершить заказ</button>
-        </Card>
-      ))}
+      {orderCount ?
+        <h3>Count: {orderCount}</h3>
+        :
+        <h2>На данный момент заказов нет</h2>
+      }
+      <div>
+        {orderList.map(order => (
+          <Card key={order.id} style={cardStyle}>
+            <p>{order.user.email} </p>
+            <p>Координаты: <b>{order.coordinates?.latitude}</b> <b>{order.coordinates?.longitude}</b></p>
+            <p>Status: <b>{signals[order.status]}</b></p>
+            <button className='delete' onClick={() => onDelete(order.id)}>Удалить заказ</button>
+            <button className='complete' onClick={() => onSubmit(order.id)}>Завершить заказ</button>
+          </Card>
+        ))}
+      </div>
     </PageLayout>
   );
 };

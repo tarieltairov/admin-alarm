@@ -14,8 +14,10 @@ const UserCard = ({ user }) => {
 
   return (
     <Card
-      title={`${user.email} ${user.firstName} ${user.lastName}`}
+      title={`${user.email}`}
     >
+      <h3>Name: {user.firstName}</h3>
+      <h3>Last Name: {user.lastName}</h3>
       {user.wallet ? (
         <p>Status: {user.wallet.paid ? `Оплачено до ${new Date(user.wallet.expirationDate).toDateString()}` : 'Не оплачено'}</p>
       ) :
@@ -23,6 +25,7 @@ const UserCard = ({ user }) => {
           <p>Status: Не оплачено</p>
         )
       }
+      <p>Список детей:</p>
       <ul>
         {user.role === 'PARENT' &&
           user.children.map(child => (
@@ -33,6 +36,7 @@ const UserCard = ({ user }) => {
       {(user.role === 'PARENT' || user.role === 'USER') &&
         priceList.map(({ price, id, period }) => (
           <button
+            className='complete'
             key={id}
             onClick={() => pay({ userId: user.id, cash: price, priceId: id })}
           >

@@ -21,7 +21,7 @@ export default ({children}) => {
     socket.current = new WebSocket('ws://discoverystudio.xyz:7321', token);
     socket.current.onmessage = (event) => {
       const { data, event: currentEvent } = JSON.parse(event.data);
-
+      console.log(event.data)
       switch(currentEvent) {
         case 'getAll': {
           console.log('getAll', data);

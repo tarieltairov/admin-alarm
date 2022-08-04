@@ -57,7 +57,7 @@ const PageLayout = ({ children }) => {
         <Header>
           <Menu theme='light' mode="horizontal" activeKey={path || 'home'} items={menuItems} />
         </Header>
-        <Content >
+        <Content className='content'>
           {children}
         </Content>
       </Layout>

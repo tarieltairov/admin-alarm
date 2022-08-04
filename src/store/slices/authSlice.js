@@ -316,6 +316,17 @@ const authSlice = createSlice({
       } else {
         state.priceList = [action.payload, ...state.priceList];
       }
+    },
+    [createGuard.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [createGuard.pending]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [createGuard.pending]: (state, action) => {
+      state.loading = false;
+      state.guardList = [action.payload, ...state.guardList];
     }
   }
 })
