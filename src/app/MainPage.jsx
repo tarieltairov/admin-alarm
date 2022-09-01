@@ -1,67 +1,79 @@
-import React, { useEffect } from 'react';
-import { Form, Button, InputNumber, Card } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import PageLayout from '../components/PageLayout';
-import { getPrice, postPrice } from '../store/slices/authSlice';
-
+import React, { useEffect, useState } from "react";
+import { Form, Button, InputNumber, Card, Space, notification } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import PageLayout from "../components/PageLayout";
+import { getPrice, postPrice } from "../store/slices/authSlice";
+import { formattingDate } from "../utils/dateFormatter";
+import Modal from "antd/es/modal";
+import CreateRateForm from "../components/Forms/CreateRateForm";
+import Loader from "../components/Loader/Loader";
+import Notification from "../components/Notification";
 
 const MainPage = () => {
-  const { priceList } = useSelector(state => state.auth);
+  const { priceList, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getPrice());
-  }, [dispatch]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const onFinish = (values) => {
     dispatch(postPrice(values));
   };
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    dispatch(getPrice());
+
+  }, [dispatch]);
+
   return (
     <PageLayout>
-      <div className='price'>
-        <h3>Добавить или обновить тариф</h3>
-        <Form
-          name="normal-prices"
-          className="price-form"
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="price"
-            label="Стоимость"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <InputNumber
-              type="number"
-              min={1}
-            />
-          </Form.Item>
-          <Form.Item
-            name="period"
-            label="Количество дней"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <InputNumber
-              max={365}
-              min={1}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              Выставить тариф
-            </Button>
-          </Form.Item>
-        </Form>
+      <div className="price">
+        <h3>Добавить тариф</h3>
+        <div className="addRateBlock">
+          <Button type="primary" onClick={showModal}>
+            Добавить тариф
+          </Button>
+          {!loading ? (
+            <Modal
+              visible={isModalVisible}
+              onCancel={handleCancel}
+              footer={null}
+            >
+              <CreateRateForm onFinish={onFinish} handleAdd={handleCancel} />
+            </Modal>
+          ) : (
+            <Loader />
+          )}
+          <Notification/>
+        </div>
         <h3>Текущие тарифы</h3>
-        {priceList.map(price => <Card key={price.id}>{`Тариф за ${price.period} дней - ${price.price} сом`}</Card>)}
+        <Space
+          direction="vertical"
+          size="middle"
+          style={{
+            width: "60%",
+          }}
+        >
+          {priceList.map((price) => (
+            <Card
+              style={{ width: "100%" }}
+              title={`Тариф на ${price.period} дней`}
+              // extra={<a href="#">Обновить</a>}
+              key={price.id}
+            >
+              <p>
+                Стоимость: <strong>{price.price} сом</strong>
+              </p>
+              <p>Дата создания: {formattingDate(price.createDate)}</p>
+            </Card>
+          ))}
+        </Space>
       </div>
     </PageLayout>
   );
