@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOrderCount, setOrderList } from "../store/slices/socketSlice";
+import { setOnlineGuards, setOrderCount, setOrderList } from "../store/slices/socketSlice";
 
 const URL = process.env.REACT_APP_BASE_URL;
 
@@ -34,6 +34,10 @@ export default ({ children }) => {
       const { data, event: currentEvent } = JSON.parse(event.data);
 
       switch (currentEvent) {
+        case "getAllGuards": {
+          dispatch(setOnlineGuards(data));
+          break;
+        }
         case "getAll": {
           // console.log("getAll", data);
           dispatch(setOrderList(data.data));

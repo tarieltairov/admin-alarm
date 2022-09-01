@@ -4,10 +4,11 @@ const initialState = {
   order: null,
   orderList: [],
   orderCount: null,
+  onlineGuards: null,
 };
 
 const socketSlice = createSlice({
-  name: 'socket',
+  name: "socket",
   initialState,
   reducers: {
     setOrder(state, action) {
@@ -18,10 +19,14 @@ const socketSlice = createSlice({
     },
     setOrderCount(state, action) {
       state.orderCount = action.payload;
-    }
-  }
+    },
+    setOnlineGuards(state, action) {
+      state.onlineGuards = action.payload;
+    },
+  },
 });
 
-export const {setOrder, setOrderCount, setOrderList} = socketSlice.actions;
+export const { setOrder, setOrderCount, setOrderList, setOnlineGuards } =
+  socketSlice.actions;
 
 export default socketSlice.reducer;

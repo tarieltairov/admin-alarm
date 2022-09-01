@@ -13,28 +13,21 @@ import { WebSocketContext } from "../../WebSocket";
 const { Column, ColumnGroup } = Table;
 
 const SignalsTable = ({ signals }) => {
-  const { guardList } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const [signalObj, setSignalObj] = useState(null);
+  const { onlineGuards } = useSelector((state) => state.socket);
 
   const ws = useContext(WebSocketContext);
 
-  useEffect(() => {
-    dispatch(getGuardList());
-  }, []);
-
-  const menu = guardList.map(({ firstName, lastName, id }) => {
+  const menu = onlineGuards?.map((item) => {
     return {
       label: (
-        <div>
-          {firstName} {lastName}
+        <div key={item.user.id}>
+          {item.user.firstName} {item.user.lastName}
         </div>
       ),
-      key: id,
+      key: item.user.id,
     };
   });
 
-  console.log(signalObj);
 
   return (
     <div>
@@ -85,7 +78,6 @@ const SignalsTable = ({ signals }) => {
               </a>
             </Dropdown>
           )}
-        />
         />
       </Table>
     </div>

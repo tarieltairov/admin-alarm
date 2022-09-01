@@ -72,7 +72,6 @@ const SignalListPage = () => {
     const newOrderList = orderList.filter((order) => order.id !== id);
     dispatch(setOrderList(newOrderList));
   };
-  console.log(orderList);
   return (
     <PageLayout>
       {orderCount ? (
