@@ -26,7 +26,7 @@ const SignalsTable = ({ signals }) => {
   const menu = guardList.map(({ firstName, lastName, id }) => {
     return {
       label: (
-        <div>
+        <div key={id + Date.now()}>
           {firstName} {lastName}
         </div>
       ),
@@ -44,6 +44,7 @@ const SignalsTable = ({ signals }) => {
         pagination={{
           hideOnSinglePage: true,
         }}
+        rowKey={({ user }) => user.id}
       >
         <Column
           title="Имя"
@@ -80,7 +81,7 @@ const SignalsTable = ({ signals }) => {
                 />
               }
             >
-              <a>
+              <a key={id + Date.now()}>
                 Назначить <DownOutlined />
               </a>
             </Dropdown>

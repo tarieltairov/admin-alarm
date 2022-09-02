@@ -18,12 +18,13 @@ export default ({ children }) => {
 
   const sendToGuard = ({ alarmId, guardId }) => {
     const message = JSON.stringify({
-      event: "sendSosToGuard",
+      event: "sendToGuard",
       data: {
         alarmId,
         guardId,
       },
     });
+    console.log(message);
     socket.current.send(message);
   };
 

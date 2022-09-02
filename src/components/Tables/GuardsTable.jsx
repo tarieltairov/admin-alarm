@@ -54,6 +54,7 @@ const GuardsTable = ({ user }) => {
         pagination={{
           hideOnSinglePage: true,
         }}
+        rowKey={({ id }) => id}
       >
         <Column title="Имя" dataIndex="firstName" key="firstName" />
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />
