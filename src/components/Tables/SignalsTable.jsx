@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { Table, Tag, Space, Card, Dropdown, Menu } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
@@ -13,28 +13,21 @@ import { WebSocketContext } from "../../WebSocket";
 const { Column, ColumnGroup } = Table;
 
 const SignalsTable = ({ signals }) => {
-  const { guardList } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const [signalObj, setSignalObj] = useState(null);
+  const { onlineGuards } = useSelector((state) => state.socket);
 
   const ws = useContext(WebSocketContext);
+  console.log(onlineGuards);
 
-  useEffect(() => {
-    dispatch(getGuardList());
-  }, []);
-
-  const menu = guardList.map(({ firstName, lastName, id }) => {
+  const menu = onlineGuards?.map((item) => {
     return {
       label: (
-        <div key={id + Date.now()}>
-          {firstName} {lastName}
+        <div key={item.user.id}>
+          {item.user.firstName} {item.user.lastName}
         </div>
       ),
-      key: id,
+      key: item.user.id,
     };
   });
-
-  console.log(signalObj);
 
   return (
     <div>
@@ -81,12 +74,11 @@ const SignalsTable = ({ signals }) => {
                 />
               }
             >
-              <a key={id + Date.now()}>
+              <a key={id}>
                 Назначить <DownOutlined />
               </a>
             </Dropdown>
           )}
-        />
         />
       </Table>
     </div>
