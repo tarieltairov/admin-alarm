@@ -10,7 +10,7 @@ const PageLayout = ({ children }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const path = pathname.split("/").join("");
-  const { orderCount } = useSelector((state) => state.socket);
+  const { orderCount, requestCount } = useSelector((state) => state.socket);
   const dispatch = useDispatch();
 
   const menuItems = [
@@ -37,6 +37,12 @@ const PageLayout = ({ children }) => {
       key: "signal",
       icon: <UserOutlined />,
       onClick: () => navigate("/signal"),
+    },
+    {
+      label: `Requests ${requestCount || 0}`,
+      key: "requests",
+      icon: <UserOutlined />,
+      onClick: () => navigate("/requests"),
     },
     {
       label: "Archive",

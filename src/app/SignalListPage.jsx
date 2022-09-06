@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Card } from "antd";
+import React from "react";
 import PageLayout from "../components/PageLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { patchAlarm } from "../store/slices/authSlice";
@@ -59,7 +58,7 @@ const signalResp = {
 
 const SignalListPage = () => {
   const dispatch = useDispatch();
-  const { orderList, orderCount } = useSelector((state) => state.socket);
+  const { orderList, orderCount} = useSelector((state) => state.socket);
 
   const onDelete = (id) => {
     dispatch(patchAlarm({ id, status: 2 }));
@@ -91,7 +90,7 @@ const SignalListPage = () => {
         {/*))}*/}
 
         <SignalsTable signals={orderList} />
-      </div>
+      </div>  
     </PageLayout>
   );
 };

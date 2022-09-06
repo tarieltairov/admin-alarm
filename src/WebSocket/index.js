@@ -1,6 +1,12 @@
 import React, { createContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOnlineGuards, setOrderCount, setOrderList } from "../store/slices/socketSlice";
+import {
+  setOnlineGuards,
+  setOrderCount,
+  setOrderList,
+  setRequestCount,
+  setRequestList,
+} from "../store/slices/socketSlice";
 
 const URL = process.env.REACT_APP_BASE_URL;
 
@@ -24,6 +30,39 @@ export default ({ children }) => {
         guardId,
       },
     });
+    console.log(message);
+    socket.current.send(message);
+  };
+
+  const sendMessageToUser = (messageToUser) => {
+    const message = JSON.stringify({
+      event: "messageToRoom",
+      data: {
+        message: messageToUser,
+      },
+    });
+    console.log(message);
+    socket.current.send(message);
+  };
+
+  const joinRoom = (id) => {
+    const message = JSON.stringify({
+      event: "joinRoom",
+      data: {
+        roomId: id,
+      }
+    })
+    console.log(message);
+    socket.current.send(message);
+  };
+
+  const confirm = (id) => {
+    const message = JSON.stringify({
+      event: "complete",
+      data: {
+        alarmId: id,
+      }
+    })
     console.log(message);
     socket.current.send(message);
   };
@@ -71,10 +110,18 @@ export default ({ children }) => {
           dispatch(setOrderList(newOrderList));
           break;
         }
+        case "confirms": {
+          dispatch(setRequestList(data.data));
+          dispatch(setRequestCount(data.count));
+          break;
+        }
       }
       ws.current = {
         socket: socket.current,
         sendToGuard,
+        sendMessageToUser,
+        joinRoom,
+        confirm
       };
     };
   }

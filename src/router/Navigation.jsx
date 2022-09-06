@@ -5,6 +5,7 @@ import ArchivePage from '../app/ArchivePage';
 import GuardListPage from '../app/GuardListPage';
 import LoginPage from '../app/LoginPage';
 import MainPage from '../app/MainPage';
+import Requests from '../app/Requests';
 import SignalListPage from '../app/SignalListPage';
 import UserListPage from '../app/UserListPage';
 
@@ -20,6 +21,7 @@ const Navigation = () => {
           <Route path='/guards' element={<GuardListPage />} />
           <Route path='/signal' element={<SignalListPage />} />
           <Route path='/archive' element={<ArchivePage />} />
+          <Route path='/requests' element={<Requests />} />
         </Route>
         <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>

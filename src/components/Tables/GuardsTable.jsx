@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { Table, Tag, Space, Card, Dropdown, Menu } from "antd";
+import React from "react";
+import { Table, Tag, Space} from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { DownOutlined } from "@ant-design/icons";
 import { getUserList, postPay } from "../../store/slices/authSlice";
-import { formattingDate } from "../../utils/dateFormatter";
 
 const { Column, ColumnGroup } = Table;
 
 const GuardsTable = ({ user }) => {
   const { priceList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  let columnConfig;
 
   const pay = async (data) => {
     await dispatch(postPay(data));
@@ -68,7 +65,6 @@ const GuardsTable = ({ user }) => {
               <a>Удалить</a>
             </Space>
           )}
-        />
         />
       </Table>
     </div>
