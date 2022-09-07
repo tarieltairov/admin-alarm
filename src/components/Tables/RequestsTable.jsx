@@ -8,7 +8,6 @@ const RequestsTable = ({ requestList }) => {
     const ws = useContext(WebSocketContext);
 
     const confirmReq = (id) => {
-        console.log(id)
         ws.confirm(id);
     };
 
