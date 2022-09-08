@@ -122,6 +122,44 @@ export const getPrice = createAsyncThunk(
     }
   }
 );
+export const deleteUser = createAsyncThunk(
+  "auth/deleteUser",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${URL}/user/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const restoreUser = createAsyncThunk(
+  "auth/deleteUser",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `${URL}/user/restore/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const postPay = createAsyncThunk(
   "auth/postPay",
@@ -331,6 +369,41 @@ const authSlice = createSlice({
     [createGuard.pending]: (state, action) => {
       state.loading = false;
       state.guardList = [action.payload, ...state.guardList];
+    },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.guardList = state.guardList.map((guard) => {
+        if (guard.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return guard;
+      });
+    },
+    [restoreUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [restoreUser.pending]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [restoreUser.fulfilled]: (state, action) => {
+      state.loading = false;
+
+      state.guardList = state.guardList.map((guard) => {
+        if (guard.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return guard;
+      });
     },
   },
 });

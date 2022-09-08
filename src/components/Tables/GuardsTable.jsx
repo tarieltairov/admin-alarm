@@ -1,7 +1,12 @@
 import React from "react";
-import { Table, Tag, Space} from "antd";
+import { Table, Tag, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserList, postPay } from "../../store/slices/authSlice";
+import {
+  deleteUser,
+  getUserList,
+  postPay,
+  restoreUser,
+} from "../../store/slices/authSlice";
 
 const { Column, ColumnGroup } = Table;
 
@@ -60,9 +65,27 @@ const GuardsTable = ({ user }) => {
           title="Action"
           key="action"
           style={{ overflow: "auto" }}
-          render={() => (
+          render={({ id, isDeleted }) => (
             <Space size={"middle"}>
-              <a>Удалить</a>
+              {isDeleted ? (
+                <a
+                  style={{ color: "green" }}
+                  onClick={() => {
+                    dispatch(restoreUser(id));
+                  }}
+                >
+                  Восстановить
+                </a>
+              ) : (
+                <a
+                  style={{ color: "red" }}
+                  onClick={() => {
+                    dispatch(deleteUser(id));
+                  }}
+                >
+                  Удалить
+                </a>
+              )}
             </Space>
           )}
         />
