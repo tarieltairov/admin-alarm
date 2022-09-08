@@ -9,7 +9,6 @@ const CreateGuardForm = () => {
 
   const onFinish = (values) => {
     dispatch(createGuard(values));
-    console.log("values", values);
   };
 
   return (

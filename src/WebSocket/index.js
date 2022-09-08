@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   setOnlineGuards,
   setOrderCount,
@@ -15,10 +16,11 @@ const WebSocketContext = createContext(null);
 export { WebSocketContext };
 
 export default ({ children }) => {
-  const { order, orderCount, orderList } = useSelector((state) => state.socket);
+  const { order, orderCount, orderList, requestCount } = useSelector(
+    (state) => state.socket
+  );
   const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   let socket = useRef(null);
   let ws = useRef(null);
 
@@ -30,7 +32,6 @@ export default ({ children }) => {
         guardId,
       },
     });
-    console.log(message);
     socket.current.send(message);
   };
 
@@ -41,7 +42,6 @@ export default ({ children }) => {
         message: messageToUser,
       },
     });
-    console.log(message);
     socket.current.send(message);
   };
 
@@ -50,9 +50,8 @@ export default ({ children }) => {
       event: "joinRoom",
       data: {
         roomId: id,
-      }
-    })
-    console.log(message);
+      },
+    });
     socket.current.send(message);
   };
 
@@ -61,9 +60,8 @@ export default ({ children }) => {
       event: "complete",
       data: {
         alarmId: id,
-      }
-    })
-    console.log(message);
+      },
+    });
     socket.current.send(message);
   };
 
@@ -79,26 +77,26 @@ export default ({ children }) => {
           break;
         }
         case "getAll": {
-          // console.log("getAll", data);
           dispatch(setOrderList(data.data));
           dispatch(setOrderCount(data.count));
           break;
         }
         case "sendSos": {
-          // console.log("sendSos", data);
           const newOrderList = [data, ...orderList];
           dispatch(setOrderList(newOrderList));
-          dispatch(setOrderCount(orderCount + 1));
+          dispatch(setOrderCount(data.count));
+          if (orderCount !== data.count && data.count !== 0) {
+            toast.error("У вас новый запрос SOS");
+          }
           break;
         }
         case "sendSosToGuard": {
           const newOrderList = [data, ...orderList];
           dispatch(setOrderList(newOrderList));
-          dispatch(setOrderCount(orderCount - 1));
+          dispatch(setOrderCount(data.count));
           break;
         }
         case "acceptSos": {
-          // console.log("acceptSos", data);
           const newOrderList = orderList.map((order) => {
             if (order.id === data.id) {
               return data;
@@ -106,13 +104,15 @@ export default ({ children }) => {
               return order;
             }
           });
-          console.log(newOrderList);
           dispatch(setOrderList(newOrderList));
           break;
         }
         case "confirms": {
           dispatch(setRequestList(data.data));
           dispatch(setRequestCount(data.count));
+          if (requestCount !== data.count && data.count !== 0) {
+            toast.warning("У вас новый запрос на завершение");
+          }
           break;
         }
       }
@@ -121,7 +121,7 @@ export default ({ children }) => {
         sendToGuard,
         sendMessageToUser,
         joinRoom,
-        confirm
+        confirm,
       };
     };
   }

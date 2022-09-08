@@ -8,7 +8,6 @@ import { getArchive } from '../store/slices/authSlice';
 const ArchivePage = () => {
   const { archiveList } = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  console.log(archiveList);
 
   useEffect(() => {
     dispatch(getArchive());

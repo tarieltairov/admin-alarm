@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageLayout from "../components/PageLayout";
-import UserCard from "../components/UserCard";
 import UsersTable from "../components/Tables/UsersTable";
 import { getPrice, getUserList } from "../store/slices/authSlice";
 
@@ -14,7 +13,6 @@ const UserListPage = () => {
     dispatch(getPrice());
   }, [dispatch]);
 
-  console.log(userList);
 
   return (
     <PageLayout>

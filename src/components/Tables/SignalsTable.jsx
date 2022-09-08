@@ -38,11 +38,11 @@ const SignalsTable = ({ signals }) => {
       const menu = onlineGuards?.map((item) => {
         return {
           label: (
-            <div key={item.user.id}>
-              {item.user.firstName} {item.user.lastName}
+            <div key={item?.id}>
+              {item?.firstName} {item?.lastName}
             </div>
           ),
-          key: item.user.id,
+          key: item?.id,
         };
       });
       return menu;
@@ -102,7 +102,7 @@ const SignalsTable = ({ signals }) => {
               overlay={
                 <Menu
                   items={check(onlineGuards)}
-                  onClick={(e) => onlineGuards.length && ws.sendToGuard({ alarmId: id, guardId: +e.key + new Date() })}
+                  onClick={(e) => onlineGuards.length && ws.sendToGuard({ alarmId: id, guardId: +e.key})}
                 />
               }
             >
