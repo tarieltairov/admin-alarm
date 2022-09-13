@@ -36,7 +36,7 @@ const GuardListPage = () => {
       </div>
 
       <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <CreateGuardForm />
+        <CreateGuardForm handleCancel={handleCancel}/>
       </Modal>
       <GuardsTable user={guardList} />
     </PageLayout>

@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
 import { createGuard } from "../../store/slices/authSlice";
 
-const CreateGuardForm = () => {
+const CreateGuardForm = ({handleCancel}) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    dispatch(createGuard(values));
+    dispatch(createGuard(values)).then(()=>{
+      handleCancel();
+    });
   };
 
   return (

@@ -15,7 +15,7 @@ const ArchivePage = () => {
 
   return (
     <PageLayout>
-      {archiveList.map(item => <ArchiveCard item={item} key={item.id} />)}
+      {archiveList.slice().sort((a, b) => new Date(b?.createDate) - new Date(a?.createDate)).map(item => <ArchiveCard item={item} key={item.id} />)}
     </PageLayout>
   );
 };
