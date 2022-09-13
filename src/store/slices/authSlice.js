@@ -122,6 +122,44 @@ export const getPrice = createAsyncThunk(
     }
   }
 );
+export const deleteUser = createAsyncThunk(
+  "auth/deleteUser",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${URL}/user/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const restoreUser = createAsyncThunk(
+  "auth/deleteUser",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `${URL}/user/restore/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const postPay = createAsyncThunk(
   "auth/postPay",
@@ -187,7 +225,6 @@ export const createGuard = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -232,7 +269,6 @@ const authSlice = createSlice({
     [getUserList.fulfilled]: (state, action) => {
       state.loading = false;
       state.userList = action.payload.data;
-      console.log(action.payload.data);
     },
     [getGuardList.pending]: (state) => {
       state.loading = true;
@@ -250,11 +286,9 @@ const authSlice = createSlice({
     },
     [patchAlarm.rejected]: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
     },
     [patchAlarm.fulfilled]: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
     },
     [getPrice.pending]: (state) => {
       state.loading = true;
@@ -265,10 +299,8 @@ const authSlice = createSlice({
     [getPrice.fulfilled]: (state, action) => {
       state.loading = false;
       state.priceList = action.payload;
-      console.log(action.payload);
     },
     [postPay.fulfilled]: (state, action) => {
-      console.log(action.payload);
     },
     [getArchive.pending]: (state) => {
       state.loading = true;
@@ -321,16 +353,51 @@ const authSlice = createSlice({
         state.priceList = [action.payload, ...state.priceList];
       }
     },
-    [createGuard.pending]: (state, action) => {
+    [createGuard.pending]: (state) => {
       state.loading = true;
     },
-    [createGuard.pending]: (state, action) => {
+    [createGuard.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    [createGuard.pending]: (state, action) => {
+    [createGuard.fulfilled]: (state, action) => {
       state.loading = false;
       state.guardList = [action.payload, ...state.guardList];
+    },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.guardList = state.guardList.map((guard) => {
+        if (guard.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return guard;
+      });
+    },
+    [restoreUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [restoreUser.pending]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [restoreUser.fulfilled]: (state, action) => {
+      state.loading = false;
+
+      state.guardList = state.guardList.map((guard) => {
+        if (guard.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return guard;
+      });
     },
   },
 });

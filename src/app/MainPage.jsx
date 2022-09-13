@@ -26,10 +26,10 @@ const MainPage = () => {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    dispatch(getPrice());
+  // useEffect(() => {
+  //   dispatch(getPrice());
 
-  }, [dispatch]);
+  // }, [dispatch]);
 
   return (
     <PageLayout>
