@@ -353,7 +353,7 @@ const authSlice = createSlice({
         state.priceList = [action.payload, ...state.priceList];
       }
     },
-    [createGuard.pending]: (state, action) => {
+    [createGuard.pending]: (state) => {
       state.loading = true;
     },
     [createGuard.rejected]: (state, action) => {
