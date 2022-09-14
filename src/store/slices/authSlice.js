@@ -232,6 +232,27 @@ export const createGuard = createAsyncThunk(
     }
   }
 );
+export const paySubscription = createAsyncThunk(
+  "auth/paySubscription",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${URL}/purchase/subscription${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -362,7 +383,7 @@ const authSlice = createSlice({
     [createGuard.pending]: (state, action) => {
       state.loading = true;
     },
-    [createGuard.pending]: (state, action) => {
+    [createGuard.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -373,7 +394,7 @@ const authSlice = createSlice({
     [deleteUser.pending]: (state, action) => {
       state.loading = true;
     },
-    [deleteUser.pending]: (state, action) => {
+    [deleteUser.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -390,7 +411,7 @@ const authSlice = createSlice({
     [restoreUser.pending]: (state, action) => {
       state.loading = true;
     },
-    [restoreUser.pending]: (state, action) => {
+    [restoreUser.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -404,6 +425,18 @@ const authSlice = createSlice({
 
         return guard;
       });
+    },
+
+    [paySubscription.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [paySubscription.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [paySubscription.pending]: (state, action) => {
+      state.loading = false;
+      state.guardList = [action.payload, ...state.guardList];
     },
   },
 });

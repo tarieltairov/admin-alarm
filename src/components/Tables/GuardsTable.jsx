@@ -62,7 +62,7 @@ const GuardsTable = ({ user }) => {
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />
         <Column title="Номер телефона" dataIndex="phone" key="phoneNumber" />
         <Column
-          title="Action"
+          title="Delete"
           key="action"
           style={{ overflow: "auto" }}
           render={({ id, isDeleted }) => (

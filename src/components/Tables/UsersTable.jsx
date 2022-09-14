@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Table, Tag, Space, Card, Dropdown, Menu } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
-import { getUserList, postPay } from "../../store/slices/authSlice";
+import {
+  getUserList,
+  paySubscription,
+  postPay,
+} from "../../store/slices/authSlice";
 import { formattingDate } from "../../utils/dateFormatter";
 
 const { Column, ColumnGroup } = Table;
@@ -73,20 +77,19 @@ const UsersTable = ({ user }) => {
           }
         />
         <Column
-          title="Action"
+          title="Payment"
           key="action"
           style={{ overflow: "auto" }}
-          render={({ wallet }) =>
-            !wallet ? (
-              <Dropdown overlay={<Menu items={menu} />}>
-                <a>
-                  Оплатить <DownOutlined />
-                </a>
-              </Dropdown>
+          render={({ purchases, id }) => {
+            const isSubscribeExist = purchases.find(
+              (purchase) => purchase.type === "SUBSCRIPTION"
+            );
+            return !isSubscribeExist ? (
+              <a onClick={() => dispatch(paySubscription(id))}>Оплатить</a>
             ) : (
-              wallet.paid && <p>Оплачено.</p>
-            )
-          }
+              <p>Оплачено.</p>
+            );
+          }}
         />
         />
       </Table>
