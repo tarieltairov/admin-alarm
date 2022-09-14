@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { patchAlarm } from "../store/slices/authSlice";
 import { setOrderList } from "../store/slices/socketSlice";
 import SignalsTable from "../components/Tables/SignalsTable";
+import Loader from "../components/Loader/Loader";
 
 const SignalListPage = () => {
   const dispatch = useDispatch();
-  const { orderList, orderCount} = useSelector((state) => state.socket);
+  const { orderList, orderCount } = useSelector((state) => state.socket);
 
   const onDelete = (id) => {
     dispatch(patchAlarm({ id, status: 2 }));
@@ -20,6 +21,7 @@ const SignalListPage = () => {
     const newOrderList = orderList.filter((order) => order.id !== id);
     dispatch(setOrderList(newOrderList));
   };
+
   return (
     <PageLayout>
       {orderCount ? (
@@ -39,7 +41,7 @@ const SignalListPage = () => {
         {/*))}*/}
 
         <SignalsTable signals={orderList} />
-      </div>  
+      </div>
     </PageLayout>
   );
 };

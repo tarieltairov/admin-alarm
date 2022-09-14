@@ -60,9 +60,14 @@ code {
   width: 100vw;
   height: 100vh;
 }
-
+/*.ant-table {*/
+/*  min-height: 600px !important;*/
+/*  max-height: 650px !important;*/
+/*  overflow-y: auto;*/
+/*}*/
 .container {
   max-width: 1000px;
+  height: calc(100vh - 84px);
   margin: 0 auto;
   background-color: #fff;
 }
@@ -77,6 +82,10 @@ code {
 
 .ant-input-number {
   width: 100%;
+}
+
+.pagination {
+  margin: 0 auto;
 }
 
 .delete {

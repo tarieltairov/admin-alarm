@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Tag, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteUser,
+  getGuardList,
   getUserList,
   postPay,
   restoreUser,
@@ -10,53 +11,31 @@ import {
 
 const { Column, ColumnGroup } = Table;
 
-const GuardsTable = ({ user }) => {
-  const { priceList } = useSelector((state) => state.auth);
+const GuardsTable = ({ user, count }) => {
+  const { priceList, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const pay = async (data) => {
-    await dispatch(postPay(data));
-    await dispatch(getUserList());
+  const changePage = (page) => {
+    dispatch(getGuardList(page));
   };
-
-  const menu = priceList.map(({ price, id, period }) => {
-    return {
-      label: (
-        <div onClick={() => pay({ userId: user.id, cash: price, priceId: id })}>
-          Оплатить за {period} дней {price} сом
-        </div>
-      ),
-      key: id,
-    };
-  });
 
   return (
     <div>
       <Table
-        expandIcon={false}
-        expandable={
-          user.role === "PARENT"
-            ? {
-                expandedRowRender: ({ children }) => (
-                  <>
-                    {children.map((tag) => (
-                      <Tag color="blue" key={tag}>
-                        {tag}
-                      </Tag>
-                    ))}
-                  </>
-                ),
-              }
-            : {
-                expandIcon: () => null,
-                expandRowByClick: true,
-              }
-        }
+        loading={loading}
+        expandIcon={() => null}
         dataSource={user}
         pagination={{
-          hideOnSinglePage: true,
+          hideOnSinglePage: false,
+          defaultPageSize: 10,
+          total: count,
+          position: ["bottomCenter"],
+          onChange: (page) => changePage(page),
         }}
         rowKey={({ id }) => id}
+        scroll={{
+          y: 240,
+        }}
       >
         <Column title="Имя" dataIndex="firstName" key="firstName" />
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />

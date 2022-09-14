@@ -11,8 +11,8 @@ import { formattingDate } from "../../utils/dateFormatter";
 
 const { Column, ColumnGroup } = Table;
 
-const UsersTable = ({ user }) => {
-  const { priceList } = useSelector((state) => state.auth);
+const UsersTable = ({ user, count }) => {
+  const { priceList, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const pay = async (data) => {
@@ -31,12 +31,16 @@ const UsersTable = ({ user }) => {
     };
   });
 
+  const changePage = (page) => {
+    dispatch(getUserList(page));
+  };
+
   return (
     <div>
       <Table
-        expandIcon={false}
+        loading={loading}
         expandable={
-          user.role === "USER"
+          user?.role === "USER"
             ? {
                 expandedRowRender: ({ children }) => (
                   <>
@@ -55,7 +59,14 @@ const UsersTable = ({ user }) => {
         }
         dataSource={user}
         pagination={{
-          hideOnSinglePage: true,
+          hideOnSinglePage: false,
+          defaultPageSize: 10,
+          total: count,
+          position: ["bottomCenter"],
+          onChange: (page) => changePage(page),
+        }}
+        scroll={{
+          y: 240,
         }}
         rowKey={({ id }) => id}
       >

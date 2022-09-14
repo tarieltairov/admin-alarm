@@ -46,19 +46,22 @@ export const fetchLogin = createAsyncThunk(
 
 export const getUserList = createAsyncThunk(
   "auth/getUserList",
-  async function (_, { rejectWithValue }) {
+  async function (page, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${URL}/user/get-all?roles=PARENT,USER`,
+        `${URL}/user/get-all?roles=PARENT,USER&take=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            page,
+          },
         }
       );
 
-      return response.data;
+      return response;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
@@ -89,16 +92,22 @@ export const patchAlarm = createAsyncThunk(
 
 export const getGuardList = createAsyncThunk(
   "auth/getGuardList",
-  async function (_, { rejectWithValue }) {
+  async function (page, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${URL}/user/get-all?roles=GUARD`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${URL}/user/get-all?roles=GUARD&take=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page,
+          },
+        }
+      );
 
-      return response.data;
+      return response;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
@@ -321,8 +330,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.priceList = action.payload;
     },
-    [postPay.fulfilled]: (state, action) => {
-    },
+    [postPay.fulfilled]: (state, action) => {},
     [getArchive.pending]: (state) => {
       state.loading = true;
     },
