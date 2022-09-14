@@ -10,7 +10,7 @@ const UserListPage = () => {
 
   useEffect(() => {
     dispatch(getUserList());
-    dispatch(getPrice());
+    // dispatch(getPrice());
   }, [dispatch]);
 
 

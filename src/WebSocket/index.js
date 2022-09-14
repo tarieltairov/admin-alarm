@@ -40,6 +40,7 @@ export default ({ children }) => {
       event: "messageToRoom",
       data: {
         message: messageToUser,
+        admin: true
       },
     });
     socket.current.send(message);
@@ -79,15 +80,16 @@ export default ({ children }) => {
         case "getAll": {
           dispatch(setOrderList(data.data));
           dispatch(setOrderCount(data.count));
+          if (orderCount !== data.count && data.count !== 0) {
+            toast.warning(`Внимание! Новый запрос SOS от пользователя ${data?.data[0].user?.firstName} ${data?.data[0].user?.lastName}`);
+          }
           break;
         }
         case "sendSos": {
           const newOrderList = [data, ...orderList];
           dispatch(setOrderList(newOrderList));
           dispatch(setOrderCount(data.count));
-          if (orderCount !== data.count && data.count !== 0) {
-            toast.error("У вас новый запрос SOS");
-          }
+          
           break;
         }
         case "sendSosToGuard": {
@@ -111,7 +113,7 @@ export default ({ children }) => {
           dispatch(setRequestList(data.data));
           dispatch(setRequestCount(data.count));
           if (requestCount !== data.count && data.count !== 0) {
-            toast.warning("У вас новый запрос на завершение");
+            toast.success(`Новый запрос на завершение от агента ${data?.data[0]?.guard?.firstName} ${data?.data[0]?.guard?.lastName}`);
           }
           break;
         }

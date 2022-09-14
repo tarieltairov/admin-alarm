@@ -24,7 +24,7 @@ const RequestsTable = ({ requestList }) => {
                 <Column
                     title="Заказчик"
                     key="client"
-                    render={({ user }) => <>{user?.firstName}{user?.lastName}</>}
+                    render={({ user }) => <>{user?.firstName} {user?.lastName}</>}
                 />
                 <Column
                     title="Номер заказчика"
@@ -34,7 +34,7 @@ const RequestsTable = ({ requestList }) => {
                 <Column
                     title="Агент"
                     key="guard"
-                    render={({ guard }) => <>{guard?.firstName}{guard?.lastName}</>}
+                    render={({ guard }) => <>{guard?.firstName} {guard?.lastName}</>}
                 />
                 <Column
                     title="Номер агента"
