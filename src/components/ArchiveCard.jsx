@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import { Card, Rate } from 'antd';
 import React from 'react';
 
 const signals = {
@@ -10,7 +10,7 @@ const signals = {
 };
 
 const ArchiveCard = ({ item }) => {
-  const { status, user, coordinates } = item;
+  const { status, user, coordinates, noteFromUser } = item;
   return (
     <Card>
       <h3>
@@ -19,7 +19,10 @@ const ArchiveCard = ({ item }) => {
           style={{ color: signals[status] === 'DELETED' ? 'red' : 'green' }}
         >{signals[status]}</span>
       </h3>
-      <p>{`Координаты ${coordinates.latitude} ${coordinates.latitude}`}</p>
+      <div>
+        <p>{`Координаты ${coordinates.latitude} ${coordinates.latitude}`}</p>
+        <Rate disabled={true} count={5} value={noteFromUser || 5}/>
+      </div>
     </Card>
   );
 };
