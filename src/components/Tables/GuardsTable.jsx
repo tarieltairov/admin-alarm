@@ -20,56 +20,54 @@ const GuardsTable = ({ user, count }) => {
   };
 
   return (
-    <div>
-      <Table
-        loading={loading}
-        expandIcon={() => null}
-        dataSource={user}
-        pagination={{
-          hideOnSinglePage: false,
-          defaultPageSize: 10,
-          total: count,
-          position: ["bottomCenter"],
-          onChange: (page) => changePage(page),
-        }}
-        rowKey={({ id }) => id}
-        scroll={{
-          y: 240,
-        }}
-      >
-        <Column title="Имя" dataIndex="firstName" key="firstName" />
-        <Column title="Фамилия" dataIndex="lastName" key="lastName" />
-        <Column title="Номер телефона" dataIndex="phone" key="phoneNumber" />
-        <Column
-          title="Delete"
-          key="action"
-          style={{ overflow: "auto" }}
-          render={({ id, isDeleted }) => (
-            <Space size={"middle"}>
-              {isDeleted ? (
-                <a
-                  style={{ color: "green" }}
-                  onClick={() => {
-                    dispatch(restoreUser(id));
-                  }}
-                >
-                  Восстановить
-                </a>
-              ) : (
-                <a
-                  style={{ color: "red" }}
-                  onClick={() => {
-                    dispatch(deleteUser(id));
-                  }}
-                >
-                  Удалить
-                </a>
-              )}
-            </Space>
-          )}
-        />
-      </Table>
-    </div>
+    <Table
+      loading={loading}
+      expandIcon={() => null}
+      dataSource={user}
+      pagination={{
+        hideOnSinglePage: false,
+        defaultPageSize: 10,
+        total: count,
+        position: ["bottomCenter"],
+        onChange: (page) => changePage(page),
+      }}
+      rowKey={(user) => user?.id}
+      scroll={{
+        y: 240,
+      }}
+    >
+      <Column title="Имя" dataIndex="firstName" key="firstName" />
+      <Column title="Фамилия" dataIndex="lastName" key="lastName" />
+      <Column title="Номер телефона" dataIndex="phone" key="phoneNumber" />
+      <Column
+        title="Delete"
+        key="action"
+        style={{ overflow: "auto" }}
+        render={(user) => (
+          <Space size={"middle"}>
+            {user?.isDeleted ? (
+              <a
+                style={{ color: "green" }}
+                onClick={() => {
+                  dispatch(restoreUser(user?.id));
+                }}
+              >
+                Восстановить
+              </a>
+            ) : (
+              <a
+                style={{ color: "red" }}
+                onClick={() => {
+                  dispatch(deleteUser(user?.id));
+                }}
+              >
+                Удалить
+              </a>
+            )}
+          </Space>
+        )}
+      />
+    </Table>
   );
 };
 

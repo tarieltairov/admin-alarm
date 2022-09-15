@@ -1,0 +1,11 @@
+.editBtn {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+}
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

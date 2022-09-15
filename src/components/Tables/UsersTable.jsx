@@ -72,33 +72,38 @@ const UsersTable = ({ user, count }) => {
       >
         <Column title="Имя" dataIndex="firstName" key="firstName" />
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />
+        {/*<Column*/}
+        {/*  title="Статус оплаты"*/}
+        {/*  key="wallet"*/}
+        {/*  render={({ wallet }) =>*/}
+        {/*    wallet ? (*/}
+        {/*      <p>*/}
+        {/*        {wallet.paid*/}
+        {/*          ? `Оплачено до ${formattingDate(wallet.expirationDate)}`*/}
+        {/*          : "Не оплачено"}*/}
+        {/*      </p>*/}
+        {/*    ) : (*/}
+        {/*      <p>Не оплачено</p>*/}
+        {/*    )*/}
+        {/*  }*/}
+        {/*/>*/}
         <Column
-          title="Статус оплаты"
-          key="wallet"
-          render={({ wallet }) =>
-            wallet ? (
-              <p>
-                {wallet.paid
-                  ? `Оплачено до ${formattingDate(wallet.expirationDate)}`
-                  : "Не оплачено"}
-              </p>
-            ) : (
-              <p>Не оплачено</p>
-            )
-          }
-        />
-        <Column
-          title="Payment"
+          title="Статус Оплаты"
           key="action"
           style={{ overflow: "auto" }}
           render={({ purchases, id }) => {
-            const isSubscribeExist = purchases.find(
+            const allSubscribes = purchases.find(
               (purchase) => purchase.type === "SUBSCRIPTION"
             );
-            return !isSubscribeExist ? (
+            const lastSubIndex = purchases.lastIndexOf(allSubscribes);
+            const lastSubscribe = purchases[lastSubIndex];
+            return !lastSubscribe ? (
               <a onClick={() => dispatch(paySubscription(id))}>Оплатить</a>
             ) : (
-              <p>Оплачено.</p>
+              <p>
+                Оплачено до&nbsp;
+                {formattingDate(lastSubscribe.subscription.expirationDate)}
+              </p>
             );
           }}
         />

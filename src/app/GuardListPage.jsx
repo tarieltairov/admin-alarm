@@ -40,7 +40,7 @@ const GuardListPage = () => {
       <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <CreateGuardForm handleCancel={handleCancel} />
       </Modal>
-      <GuardsTable user={guardList.data} count={guardList.count} />
+      <GuardsTable user={guardList.data || []} count={guardList.count} />
     </PageLayout>
   );
 };
