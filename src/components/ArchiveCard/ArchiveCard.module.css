@@ -6,6 +6,16 @@
 }
 .info {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
+}
+.comment {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: 400px;
+  height: 100%;
+}
+.commentValue > p {
+  word-break: break-all;
 }

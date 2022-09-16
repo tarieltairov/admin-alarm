@@ -13,6 +13,7 @@ const RequestsTable = ({ requestList }) => {
   return (
     <div>
       <Table
+        locale={{ emptyText: "Нет Запросов" }}
         expandIcon={false}
         dataSource={requestList}
         pagination={{
@@ -54,7 +55,7 @@ const RequestsTable = ({ requestList }) => {
         />
 
         <Column
-          title="Action"
+          title="Завершение запроса"
           key="action"
           style={{ overflow: "auto" }}
           render={({ id }) => (

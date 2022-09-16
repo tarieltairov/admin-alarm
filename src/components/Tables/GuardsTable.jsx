@@ -40,7 +40,7 @@ const GuardsTable = ({ user, count }) => {
       <Column title="Фамилия" dataIndex="lastName" key="lastName" />
       <Column title="Номер телефона" dataIndex="phone" key="phoneNumber" />
       <Column
-        title="Delete"
+        title="Удаление"
         key="action"
         style={{ overflow: "auto" }}
         render={(user) => (

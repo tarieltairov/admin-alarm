@@ -262,6 +262,30 @@ export const paySubscription = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  "auth/addComment",
+  async function ({ userId, comment }, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `${URL}/alarm/comment/${userId}`,
+        {
+          comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -482,7 +506,18 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    [paySubscription.pending]: (state, action) => {
+    [paySubscription.fulfilled]: (state, action) => {
+      state.loading = false;
+      // state.guardList.data = [action.payload, ...state.guardList.data];
+    },
+    [addComment.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [addComment.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [addComment.fulfilled]: (state, action) => {
       state.loading = false;
       // state.guardList.data = [action.payload, ...state.guardList.data];
     },

@@ -7,7 +7,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import ArchivePage from "../app/ArchivePage";
+import ArchivePage from "../app/ArchivePage/ArchivePage";
 import GuardListPage from "../app/GuardListPage";
 import LoginPage from "../app/LoginPage";
 import MainPage from "../app/MainPage";

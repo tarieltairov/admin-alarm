@@ -12,7 +12,7 @@ const signals = {
 };
 
 const ArchiveCard = ({ item, showModal }) => {
-  const { status, user, coordinates, alarm } = item;
+  const { status, user, coordinates, alarm, comment, id } = item;
   return (
     <Card>
       <div className={classes.info}>
@@ -24,7 +24,15 @@ const ArchiveCard = ({ item, showModal }) => {
             {signals[status]}
           </span>
         </h3>
-        <button className={classes.editBtn} onClick={() => showModal()}>
+        {comment.length > 0 && (
+          <div className={classes.comment}>
+            <span>Комментарий</span>
+            <div className={classes.commentValue}>
+              <p>{comment}</p>
+            </div>
+          </div>
+        )}
+        <button className={classes.editBtn} onClick={() => showModal(id)}>
           <EditOutlined />
         </button>
       </div>

@@ -1,0 +1,7 @@
+.commentModal {
+  /*display: none;*/
+}
+:global(.ant-modal-header),
+:global(.ant-modal-footer) {
+  border: none !important;
+}
