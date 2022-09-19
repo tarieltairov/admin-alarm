@@ -108,7 +108,7 @@ const SignalsTable = ({ signals }) => {
                   items={check(onlineGuards)}
                   onClick={(e) =>
                     onlineGuards.length &&
-                    ws.sendToGuard({ alarmId: id, guardId: +e.key })
+                    ws.sendToGuard({ alarmId: id, guardId: e.key })
                   }
                 />
               }

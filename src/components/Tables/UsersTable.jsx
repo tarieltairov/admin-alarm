@@ -42,20 +42,20 @@ const UsersTable = ({ user, count }) => {
         expandable={
           user?.role === "USER"
             ? {
-                expandedRowRender: ({ children }) => (
-                  <>
-                    {children.map((tag) => (
-                      <Tag color="blue" key={tag}>
-                        {tag}
-                      </Tag>
-                    ))}
-                  </>
-                ),
-              }
+              expandedRowRender: ({ children }) => (
+                <>
+                  {children.map((tag) => (
+                    <Tag color="blue" key={tag}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </>
+              ),
+            }
             : {
-                expandIcon: () => null,
-                expandRowByClick: true,
-              }
+              expandIcon: () => null,
+              expandRowByClick: true,
+            }
         }
         dataSource={user}
         pagination={{
@@ -70,6 +70,7 @@ const UsersTable = ({ user, count }) => {
         }}
         rowKey={({ id }) => id}
       >
+        <Column title="Секретное слово" dataIndex="secretWord" key="secretWord" />
         <Column title="Имя" dataIndex="firstName" key="firstName" />
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />
         {/*<Column*/}
@@ -106,7 +107,6 @@ const UsersTable = ({ user, count }) => {
               </p>
             );
           }}
-        />
         />
       </Table>
     </div>

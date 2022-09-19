@@ -50,6 +50,11 @@ const PageLayout = ({ children }) => {
       onClick: () => navigate("/archive"),
     },
     {
+      label: "Map",
+      key: "map",
+      onClick: () => navigate("/map"),
+    },
+    {
       label: "Exit",
       key: "exit",
       icon: <LogoutOutlined />,

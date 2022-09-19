@@ -11,6 +11,7 @@ import ArchivePage from "../app/ArchivePage";
 import GuardListPage from "../app/GuardListPage";
 import LoginPage from "../app/LoginPage";
 import MainPage from "../app/MainPage";
+import MapPage from "../app/MapPage";
 import Requests from "../app/Requests";
 import SignalListPage from "../app/SignalListPage";
 import UserListPage from "../app/UserListPage";
@@ -31,6 +32,7 @@ const Navigation = () => {
             <Route path="/signal" element={<SignalListPage />} />
             <Route path="/archive" element={<ArchivePage />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="/map" element={<MapPage />} />
           </Route>
           <Route path="*" element={<p>There's nothing here: 404!</p>} />
         </Routes>

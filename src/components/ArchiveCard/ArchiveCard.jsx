@@ -12,7 +12,8 @@ const signals = {
 };
 
 const ArchiveCard = ({ item, showModal }) => {
-  const { status, user, coordinates, alarm } = item;
+  const { status, user, coordinates, noteFromUser, createDate
+  } = item;
   return (
     <Card>
       <div className={classes.info}>
@@ -30,8 +31,9 @@ const ArchiveCard = ({ item, showModal }) => {
       </div>
 
       <div>
-        <p>{`Координаты ${coordinates.latitude} ${coordinates.latitude}`}</p>
-        <Rate disabled={true} count={5} value={alarm?.noteFromUser || 5} />
+        <p>{`Координаты - ${coordinates.latitude} ${coordinates.latitude}`}</p>
+        <p style={{marginTop: '10px'}} >{`Дата и время -  ${new Date(createDate).toLocaleString()}`}</p>
+        <Rate disabled={true} count={5} value={noteFromUser || 0} />
       </div>
     </Card>
   );
