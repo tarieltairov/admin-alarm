@@ -46,18 +46,21 @@ export const fetchLogin = createAsyncThunk(
 
 export const getUserList = createAsyncThunk(
   "auth/getUserList",
-  async function (_, { rejectWithValue }) {
+  async function ({ page, name }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${URL}/user/get-all?roles=PARENT,USER`,
+        `${URL}/user/get-all?roles=PARENT,USER&take=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            page,
+            name,
+          },
         }
       );
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -89,14 +92,21 @@ export const patchAlarm = createAsyncThunk(
 
 export const getGuardList = createAsyncThunk(
   "auth/getGuardList",
-  async function (_, { rejectWithValue }) {
+  async function ({ page, name }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${URL}/user/get-all?roles=GUARD`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${URL}/user/get-all?roles=GUARD&take=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page,
+            name,
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -140,7 +150,7 @@ export const deleteUser = createAsyncThunk(
   }
 );
 export const restoreUser = createAsyncThunk(
-  "auth/deleteUser",
+  "auth/restoreUser",
   async function (id, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
@@ -199,15 +209,18 @@ export const postPrice = createAsyncThunk(
 
 export const getArchive = createAsyncThunk(
   "auth/getArchive",
-  async function (_, { rejectWithValue }) {
+  async function ({ page }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(`${URL}/alarm?status=5,2,3`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          take: 1,
+          page: 1,
+        },
       });
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -225,6 +238,51 @@ export const createGuard = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const paySubscription = createAsyncThunk(
+  "auth/paySubscription",
+  async function (id, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${URL}/purchase/subscription/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const addComment = createAsyncThunk(
+  "auth/addComment",
+  async function ({ userId, comment }, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `${URL}/alarm/comment/${userId}`,
+        {
+          comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -268,7 +326,7 @@ const authSlice = createSlice({
     },
     [getUserList.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userList = action.payload.data;
+      state.userList = action.payload;
     },
     [getGuardList.pending]: (state) => {
       state.loading = true;
@@ -279,7 +337,7 @@ const authSlice = createSlice({
     },
     [getGuardList.fulfilled]: (state, action) => {
       state.loading = false;
-      state.guardList = action.payload.data;
+      state.guardList = action.payload;
     },
     [patchAlarm.pending]: (state) => {
       state.loading = true;
@@ -301,6 +359,13 @@ const authSlice = createSlice({
       state.priceList = action.payload;
     },
     [postPay.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.userList.data = state.userList.data.map((user) => {
+        if (user.id === action.payload.id) {
+          return action.payload;
+        }
+        return user;
+      });
     },
     [getArchive.pending]: (state) => {
       state.loading = true;
@@ -312,7 +377,7 @@ const authSlice = createSlice({
     [getArchive.fulfilled]: (state, action) => {
       state.loading = false;
       state.error = "";
-      state.archiveList = action.payload.data;
+      state.archiveList = action.payload;
     },
     [postPrice.pending]: (state, action) => {
       state.loading = true;
@@ -359,44 +424,109 @@ const authSlice = createSlice({
     [createGuard.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      notification.error({
+        placement: "topRight",
+        top: 50,
+        duration: 3,
+        rtl: true,
+        message: action.payload,
+      });
     },
     [createGuard.fulfilled]: (state, action) => {
       state.loading = false;
-      state.guardList = [action.payload, ...state.guardList];
+      state.guardList.data = [...state.guardList.data, action.payload];
+      state.guardList.count += 1;
+
+      notification.success({
+        placement: "topRight",
+        top: 50,
+        duration: 3,
+        rtl: true,
+        message: "Пользователь успешно создан",
+      });
     },
     [deleteUser.pending]: (state, action) => {
       state.loading = true;
     },
-    [deleteUser.pending]: (state, action) => {
+    [deleteUser.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      notification.success({
+        placement: "topRight",
+        top: 50,
+        duration: 3,
+        rtl: true,
+        message: action.payload,
+      });
     },
     [deleteUser.fulfilled]: (state, action) => {
       state.loading = false;
-      state.guardList = state.guardList.map((guard) => {
+      state.guardList.data = state.guardList.data.map((guard) => {
+        if (guard.id === action.payload.id) {
+          return action.payload;
+        }
+        return guard;
+      });
+
+      notification.success({
+        placement: "topRight",
+        top: 50,
+        duration: 3,
+        rtl: true,
+        message: "Пользователь успешно удалён",
+      });
+    },
+    [restoreUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [restoreUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [restoreUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.guardList.data = state.guardList.data.map((guard) => {
         if (guard.id === action.payload.id) {
           return action.payload;
         }
 
         return guard;
       });
+
+      notification.success({
+        placement: "topRight",
+        top: 50,
+        duration: 3,
+        rtl: true,
+        message: "Пользователь успешно восстановлен",
+      });
     },
-    [restoreUser.pending]: (state, action) => {
+
+    [paySubscription.pending]: (state, action) => {
       state.loading = true;
     },
-    [restoreUser.pending]: (state, action) => {
+    [paySubscription.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    [restoreUser.fulfilled]: (state, action) => {
+    [paySubscription.fulfilled]: (state, action) => {
       state.loading = false;
-
-      state.guardList = state.guardList.map((guard) => {
-        if (guard.id === action.payload.id) {
-          return action.payload;
+      // state.guardList.data = [action.payload, ...state.guardList.data];
+    },
+    [addComment.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [addComment.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [addComment.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.archiveList.data = state.archiveList.data.map((item) => {
+        if (item.id === action.payload.id) {
+          return { ...item, comment: action.payload.comment };
         }
-
-        return guard;
+        return item;
       });
     },
   },

@@ -5,6 +5,7 @@ import PageLayout from "../components/PageLayout";
 import { getGuardList, postPrice } from "../store/slices/authSlice";
 import CreateGuardForm from "../components/Forms/CreateGuardForm";
 import GuardsTable from "../components/Tables/GuardsTable";
+import Loader from "../components/Loader/Loader";
 
 const GuardListPage = () => {
   const { guardList } = useSelector((state) => state.auth);
@@ -24,9 +25,10 @@ const GuardListPage = () => {
   };
 
   useEffect(() => {
-    dispatch(getGuardList());
+    dispatch(getGuardList({}));
   }, [dispatch]);
 
+  console.log(guardList);
   return (
     <PageLayout>
       <div className={"btnCreateGuard"}>
@@ -36,9 +38,9 @@ const GuardListPage = () => {
       </div>
 
       <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <CreateGuardForm handleCancel={handleCancel}/>
+        <CreateGuardForm handleCancel={handleCancel} />
       </Modal>
-      <GuardsTable user={guardList} />
+      <GuardsTable user={guardList.data || []} count={guardList.count} />
     </PageLayout>
   );
 };

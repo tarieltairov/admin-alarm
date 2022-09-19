@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Table, Dropdown, Menu, Button, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined, SendOutlined } from "@ant-design/icons";
@@ -10,26 +10,26 @@ const { Column, ColumnGroup } = Table;
 const { TextArea } = Input;
 
 const SignalsTable = ({ signals }) => {
-
   const dispatch = useDispatch();
   const ws = useContext(WebSocketContext);
+  const { loading } = useSelector((state) => state.auth);
 
   const { onlineGuards, isModalVisible } = useSelector((state) => state.socket);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const showModal = (id) => {
     dispatch(setCompleteModal(true));
-    ws.joinRoom(id)
+    ws.joinRoom(id);
   };
 
   const handleCancel = () => {
-    setMessage('');
+    setMessage("");
     dispatch(setCompleteModal(false));
   };
 
   const sendMessage = () => {
     ws.sendMessageToUser(message);
-    setMessage('');
+    setMessage("");
     handleCancel();
   };
 
@@ -47,11 +47,11 @@ const SignalsTable = ({ signals }) => {
       });
       return menu;
     } else {
-      const newArray = ['нет агентов в сети'];
+      const newArray = ["нет агентов в сети"];
       const forMenu = newArray?.map((item, index) => {
         return {
           label: (
-            <div key={index} style={{ color: 'red' }}>
+            <div key={index} style={{ color: "red" }}>
               {item}
             </div>
           ),
@@ -62,16 +62,21 @@ const SignalsTable = ({ signals }) => {
     }
   };
 
-
   return (
     <div>
       <Table
+        locale={{ emptyText: "Нет Сигналов" }}
+        loading={loading}
         expandIcon={false}
         dataSource={signals}
         pagination={{
-          hideOnSinglePage: true,
+          hideOnSinglePage: false,
+          position: ["bottomCenter"],
         }}
         rowKey={({ user }) => user.id}
+        scroll={{
+          y: 240,
+        }}
       >
         <Column
           title="Имя"
@@ -94,7 +99,7 @@ const SignalsTable = ({ signals }) => {
           render={({ user }) => <>{user.email}</>}
         />
         <Column
-          title="Appointment"
+          title="Назначение"
           key="appointment"
           style={{ overflow: "auto" }}
           render={({ id }) => (
@@ -102,7 +107,10 @@ const SignalsTable = ({ signals }) => {
               overlay={
                 <Menu
                   items={check(onlineGuards)}
-                  onClick={(e) => onlineGuards.length && ws.sendToGuard({ alarmId: id, guardId: +e.key})}
+                  onClick={(e) =>
+                    onlineGuards.length &&
+                    ws.sendToGuard({ alarmId: id, guardId: e.key })
+                  }
                 />
               }
             >
@@ -113,7 +121,7 @@ const SignalsTable = ({ signals }) => {
           )}
         />
         <Column
-          title="Message"
+          title="Сообщение"
           key="message"
           style={{ overflow: "auto" }}
           align="center"
@@ -121,21 +129,27 @@ const SignalsTable = ({ signals }) => {
             <>
               <SendOutlined onClick={() => showModal(id)} />
 
-
               <Modal
                 visible={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
               >
-                <p>Отправка сообщения {user.firstName}{user.lastName}-(у) </p>
+                <p>
+                  Отправка сообщения {user.firstName}
+                  {user.lastName}-(у){" "}
+                </p>
                 <TextArea
                   rows={4}
                   placeholder="Введите сообщение"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  style={{ margin: '15px 0' }}
+                  style={{ margin: "15px 0" }}
                 />
-                <Button type="danger" onClick={handleCancel} style={{ marginRight: '15px' }}>
+                <Button
+                  type="danger"
+                  onClick={handleCancel}
+                  style={{ marginRight: "15px" }}
+                >
                   Отклонить
                 </Button>
                 <Button type="primary" onClick={sendMessage}>

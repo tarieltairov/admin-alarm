@@ -13,10 +13,11 @@ const antIcon = (
   />
 );
 
-const Loader = () => (
-  <div className={classes.loader}>
-    <Spin indicator={antIcon} />
-  </div>
-);
+const Loader = ({ visable }) =>
+  visable && (
+    <div className={classes.loader}>
+      <Spin indicator={antIcon} />
+    </div>
+  );
 
 export default Loader;
