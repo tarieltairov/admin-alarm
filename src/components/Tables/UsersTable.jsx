@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { Table, Tag, Space, Card, Dropdown, Menu } from "antd";
+import React, { useRef, useState } from "react";
+import { Table, Tag, Space, Card, Dropdown, Menu, Button, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 import {
+  getGuardList,
   getUserList,
   paySubscription,
   postPay,
 } from "../../store/slices/authSlice";
 import { formattingDate } from "../../utils/dateFormatter";
+import { ColumnSearchProps } from "../columnSearchProps";
 
 const { Column, ColumnGroup } = Table;
 
@@ -17,7 +19,7 @@ const UsersTable = ({ user, count }) => {
 
   const pay = async (data) => {
     await dispatch(postPay(data));
-    await dispatch(getUserList());
+    await dispatch(getUserList({}));
   };
 
   const menu = priceList.map(({ price, id, period }) => {
@@ -32,7 +34,7 @@ const UsersTable = ({ user, count }) => {
   });
 
   const changePage = (page) => {
-    dispatch(getUserList(page));
+    dispatch(getUserList({ page }));
   };
 
   return (
@@ -71,7 +73,15 @@ const UsersTable = ({ user, count }) => {
         rowKey={({ id }) => id}
       >
         <Column title="Секретное слово" dataIndex="secretWord" key="secretWord" />
-        <Column title="Имя" dataIndex="firstName" key="firstName" />
+        <Column
+          title="Имя"
+          dataIndex="firstName"
+          key="firstName"
+          {...ColumnSearchProps({
+            dataIndex: "firstName",
+            getUsers: getUserList,
+          })}
+        />
         <Column title="Фамилия" dataIndex="lastName" key="lastName" />
         {/*<Column*/}
         {/*  title="Статус оплаты"*/}

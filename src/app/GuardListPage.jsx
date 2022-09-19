@@ -25,7 +25,7 @@ const GuardListPage = () => {
   };
 
   useEffect(() => {
-    dispatch(getGuardList());
+    dispatch(getGuardList({}));
   }, [dispatch]);
 
   console.log(guardList);

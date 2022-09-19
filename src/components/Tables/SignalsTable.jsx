@@ -65,6 +65,7 @@ const SignalsTable = ({ signals }) => {
   return (
     <div>
       <Table
+        locale={{ emptyText: "Нет Сигналов" }}
         loading={loading}
         expandIcon={false}
         dataSource={signals}
@@ -98,7 +99,7 @@ const SignalsTable = ({ signals }) => {
           render={({ user }) => <>{user.email}</>}
         />
         <Column
-          title="Appointment"
+          title="Назначение"
           key="appointment"
           style={{ overflow: "auto" }}
           render={({ id }) => (
@@ -120,7 +121,7 @@ const SignalsTable = ({ signals }) => {
           )}
         />
         <Column
-          title="Message"
+          title="Сообщение"
           key="message"
           style={{ overflow: "auto" }}
           align="center"
