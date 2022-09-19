@@ -11,10 +11,9 @@ const UserListPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserList());
+    dispatch(getUserList({}));
     // dispatch(getPrice());
-  }, [dispatch]);
-  console.log(userList);
+  }, []);
   return (
     <PageLayout>
       <UsersTable user={userList.data} count={userList.count} />

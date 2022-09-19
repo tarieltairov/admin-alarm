@@ -8,6 +8,7 @@ import {
   postPay,
   restoreUser,
 } from "../../store/slices/authSlice";
+import { ColumnSearchProps } from "../columnSearchProps";
 
 const { Column, ColumnGroup } = Table;
 
@@ -16,7 +17,7 @@ const GuardsTable = ({ user, count }) => {
   const dispatch = useDispatch();
 
   const changePage = (page) => {
-    dispatch(getGuardList(page));
+    dispatch(getGuardList({ page }));
   };
 
   return (
@@ -36,7 +37,15 @@ const GuardsTable = ({ user, count }) => {
         y: 240,
       }}
     >
-      <Column title="Имя" dataIndex="firstName" key="firstName" />
+      <Column
+        title="Имя"
+        dataIndex="firstName"
+        key="firstName"
+        {...ColumnSearchProps({
+          dataIndex: "firstName",
+          getUsers: getGuardList,
+        })}
+      />
       <Column title="Фамилия" dataIndex="lastName" key="lastName" />
       <Column title="Номер телефона" dataIndex="phone" key="phoneNumber" />
       <Column

@@ -12,19 +12,19 @@ const signals = {
 };
 
 const ArchiveCard = ({ item, showModal }) => {
-  const { status, user, coordinates, alarm, comment, id } = item;
+  const { status, user, coordinates, noteFromUser, comment, id } = item;
   return (
     <Card>
       <div className={classes.info}>
         <h3>
-          {`Сигнал от ${user.firstName} ${user.lastName}. Статус `}
+          {`Сигнал от ${user?.firstName} ${user?.lastName}. Статус `}
           <span
             style={{ color: signals[status] === "DELETED" ? "red" : "green" }}
           >
             {signals[status]}
           </span>
         </h3>
-        {comment.length > 0 && (
+        {comment && (
           <div className={classes.comment}>
             <span>Комментарий</span>
             <div className={classes.commentValue}>
@@ -38,8 +38,8 @@ const ArchiveCard = ({ item, showModal }) => {
       </div>
 
       <div>
-        <p>{`Координаты ${coordinates.latitude} ${coordinates.latitude}`}</p>
-        <Rate disabled={true} count={5} value={alarm?.noteFromUser || 5} />
+        <p>{`Координаты ${coordinates?.latitude} ${coordinates?.latitude}`}</p>
+        <Rate disabled={true} count={5} value={noteFromUser || 5} />
       </div>
     </Card>
   );

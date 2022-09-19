@@ -46,7 +46,7 @@ export const fetchLogin = createAsyncThunk(
 
 export const getUserList = createAsyncThunk(
   "auth/getUserList",
-  async function (page, { rejectWithValue }) {
+  async function ({ page, name }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
@@ -57,11 +57,11 @@ export const getUserList = createAsyncThunk(
           },
           params: {
             page,
+            name,
           },
         }
       );
-
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
@@ -92,7 +92,7 @@ export const patchAlarm = createAsyncThunk(
 
 export const getGuardList = createAsyncThunk(
   "auth/getGuardList",
-  async function (page, { rejectWithValue }) {
+  async function ({ page, name }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
@@ -103,11 +103,12 @@ export const getGuardList = createAsyncThunk(
           },
           params: {
             page,
+            name,
           },
         }
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
@@ -208,15 +209,18 @@ export const postPrice = createAsyncThunk(
 
 export const getArchive = createAsyncThunk(
   "auth/getArchive",
-  async function (_, { rejectWithValue }) {
+  async function ({ page }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(`${URL}/alarm?status=5,2,3`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          take: 1,
+          page: 1,
+        },
       });
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -322,7 +326,7 @@ const authSlice = createSlice({
     },
     [getUserList.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userList = action.payload.data;
+      state.userList = action.payload;
     },
     [getGuardList.pending]: (state) => {
       state.loading = true;
@@ -333,7 +337,7 @@ const authSlice = createSlice({
     },
     [getGuardList.fulfilled]: (state, action) => {
       state.loading = false;
-      state.guardList = action.payload.data;
+      state.guardList = action.payload;
     },
     [patchAlarm.pending]: (state) => {
       state.loading = true;
@@ -373,7 +377,7 @@ const authSlice = createSlice({
     [getArchive.fulfilled]: (state, action) => {
       state.loading = false;
       state.error = "";
-      state.archiveList = action.payload.data;
+      state.archiveList = action.payload;
     },
     [postPrice.pending]: (state, action) => {
       state.loading = true;
@@ -481,7 +485,6 @@ const authSlice = createSlice({
     },
     [restoreUser.fulfilled]: (state, action) => {
       state.loading = false;
-
       state.guardList.data = state.guardList.data.map((guard) => {
         if (guard.id === action.payload.id) {
           return action.payload;
@@ -519,7 +522,12 @@ const authSlice = createSlice({
     },
     [addComment.fulfilled]: (state, action) => {
       state.loading = false;
-      // state.guardList.data = [action.payload, ...state.guardList.data];
+      state.archiveList.data = state.archiveList.data.map((item) => {
+        if (item.id === action.payload.id) {
+          return { ...item, comment: action.payload.comment };
+        }
+        return item;
+      });
     },
   },
 });
