@@ -1,0 +1,26 @@
+.map-container{
+    width: 100%;
+    height: calc(100vh - 100px);
+}
+
+.free{
+    background-color: rgb(13, 185, 13);
+    color: white;
+    padding: 0 5px;
+    border-radius: 6px;
+    font-weight: 400;
+    border: 1px solid lightgray;
+    margin-bottom: 50px;
+    margin-left: 10px;
+}
+
+.busy{
+    background-color: red;
+    color: white;
+    padding: 0 5px;
+    border-radius: 6px;
+    font-weight: 400;
+    border: 1px solid lightgray;
+    margin-bottom: 50px;
+    margin-left: 10px;
+}

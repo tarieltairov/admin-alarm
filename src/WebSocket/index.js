@@ -9,7 +9,6 @@ import {
   setRequestList,
 } from "../store/slices/socketSlice";
 
-const URL = process.env.REACT_APP_BASE_URL;
 
 const WebSocketContext = createContext(null);
 

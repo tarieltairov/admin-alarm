@@ -36,14 +36,16 @@ const SignalsTable = ({ signals }) => {
   const check = (onlineGuards) => {
     if (onlineGuards?.length) {
       const menu = onlineGuards?.map((item) => {
-        return {
-          label: (
-            <div key={item?.id}>
-              {item?.firstName} {item?.lastName}
-            </div>
-          ),
-          key: item?.id,
-        };
+        if (item.status !== 0) {
+          return {
+            label: (
+              <div key={item?.id}>
+                {item?.firstName} {item?.lastName}
+              </div>
+            ),
+            key: item?.id,
+          };
+        }
       });
       return menu;
     } else {

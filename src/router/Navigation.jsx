@@ -11,7 +11,7 @@ import ArchivePage from "../app/ArchivePage/ArchivePage";
 import GuardListPage from "../app/GuardListPage";
 import LoginPage from "../app/LoginPage";
 import MainPage from "../app/MainPage";
-import MapPage from "../app/MapPage";
+import MapPage from "../app/Map/MapPage";
 import Requests from "../app/Requests";
 import SignalListPage from "../app/SignalListPage";
 import UserListPage from "../app/UserListPage";

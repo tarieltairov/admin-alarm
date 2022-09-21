@@ -9,7 +9,7 @@ const Requests = () => {
     return (
         <PageLayout>
             {requestCount ? (
-                <h3>Count: {requestCount}</h3>
+                <h3>Количество: {requestCount}</h3>
             ) : (
                 <h2>На данный момент запросов на завершение нет</h2>
             )}

@@ -15,47 +15,48 @@ const PageLayout = ({ children }) => {
 
   const menuItems = [
     {
-      label: "Home",
+      label: "Главная",
       key: "home",
       icon: <HomeOutlined />,
       onClick: () => navigate("/"),
     },
     {
-      label: "Users",
+      label: "Пользователи",
       key: "users",
       icon: <UserOutlined />,
       onClick: () => navigate("/users"),
     },
     {
-      label: "Guards",
+      label: "Агенты",
       key: "guards",
       icon: <UserOutlined />,
       onClick: () => navigate("/guards"),
     },
     {
-      label: `Signals ${orderCount || 0}`,
+      label: `SOS ${orderCount || 0}`,
       key: "signal",
       icon: <UserOutlined />,
       onClick: () => navigate("/signal"),
     },
     {
-      label: `Requests ${requestCount || 0}`,
+      label: "Карта",
+      key: "map",
+      onClick: () => navigate("/map"),
+    },
+    {
+      label: `Завершение ${requestCount || 0}`,
       key: "requests",
       icon: <UserOutlined />,
       onClick: () => navigate("/requests"),
     },
     {
-      label: "Archive",
+      label: "Архив",
       key: "archive",
       onClick: () => navigate("/archive"),
     },
+    
     {
-      label: "Map",
-      key: "map",
-      onClick: () => navigate("/map"),
-    },
-    {
-      label: "Exit",
+      label: "Выход",
       key: "exit",
       icon: <LogoutOutlined />,
       onClick: () => dispatch(logout()),

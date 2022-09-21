@@ -2,10 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { notification } from "antd";
 
-const URL = "http://discoverystudio.xyz:6969";
-
 const token = localStorage.getItem("token") || null;
-// const URL = process.env.REACT_APP_BASE_URL;
+const URL = process.env.REACT_APP_BASE_URL;
 
 const initialState = {
   error: "",
@@ -209,17 +207,14 @@ export const postPrice = createAsyncThunk(
 
 export const getArchive = createAsyncThunk(
   "auth/getArchive",
-  async function ({ page }, { rejectWithValue }) {
+  async function (params, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${URL}/alarm?status=5,2,3`, {
+      const response = await axios.get(`${URL}/history?status=5`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: {
-          take: 1,
-          page: 1,
-        },
+        params
       });
       return response.data;
     } catch (error) {

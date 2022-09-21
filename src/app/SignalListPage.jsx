@@ -25,7 +25,7 @@ const SignalListPage = () => {
   return (
     <PageLayout>
       {orderCount ? (
-        <h3>Count: {orderCount}</h3>
+        <h3>Количество: {orderCount}</h3>
       ) : (
         <h2>На данный момент заказов нет</h2>
       )}

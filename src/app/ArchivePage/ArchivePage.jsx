@@ -4,25 +4,30 @@ import ArchiveCard from "../../components/ArchiveCard/ArchiveCard";
 import PageLayout from "../../components/PageLayout";
 import {
   addComment,
-  fetchLogin,
   getArchive,
 } from "../../store/slices/authSlice";
 import Loader from "../../components/Loader/Loader";
 import Pagination from "antd/es/pagination";
-import { Modal } from "antd";
-import { Input } from "antd";
+import { Modal, Select, Input } from "antd";
 import classes from "./ArchivePage.module.css";
 
 const { TextArea } = Input;
+const { Option } = Select;
+
 const ArchivePage = () => {
   const { archiveList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [userId, setUserId] = useState(null);
   const [comment, setComment] = useState();
+  const [params, setParams] = useState({
+    page: 1,
+    take: 10
+  });
+
   useEffect(() => {
-    dispatch(getArchive({}));
-  }, []);
+    dispatch(getArchive(params));
+  }, [params]);
 
   const showModal = (id) => {
     const oldComment = archiveList.data.find((item) => item.id === id).comment;
@@ -42,27 +47,46 @@ const ArchivePage = () => {
     setComment("");
     setUserId(null);
   };
-  const changePage = (page) => {
-    dispatch(getArchive({ page }));
+  const getParams = (value, type) => {
+    const newParams = {
+      ...params,
+      [type]: value
+    }
+    setParams(newParams)
+    // dispatch(getArchive(params));
   };
 
   return (
     <PageLayout>
-      {archiveList?.data
-        ?.slice()
-        .sort((a, b) => new Date(b?.createDate) - new Date(a?.createDate))
-        .map((item) => (
-          <ArchiveCard item={item} key={item.id} showModal={showModal} />
-        ))}
+
+      <div className={classes.cardContainer}>
+        {archiveList?.data
+          ?.slice()
+          .sort((a, b) => new Date(b?.createDate) - new Date(a?.createDate))
+          .map((item) => (
+            <ArchiveCard item={item} key={item.id} showModal={showModal} />
+          ))}
+      </div>
+
 
       {archiveList?.count && (
-        <Pagination
-          className="pagination"
-          defaultCurrent={1}
-          defaultPageSize={10}
-          total={archiveList.count}
-          onChange={(page) => changePage(page)}
-        />
+        <div className={classes.paramsContainer}>
+          <Select placeholder="Лимит"  style={{ width: 120 }} onChange={(e) => getParams(e, 'take')}>
+            <Option value="disabled" disabled> Лимит</Option>
+            <Option value={10}>10</Option>
+            <Option value={15}>15</Option>
+            <Option value={20}>20</Option>
+          </Select>
+
+          <Pagination
+            className="pagination"
+            defaultCurrent={1}
+            defaultPageSize={params.take}
+            pageSize={params.take}
+            total={archiveList.count}
+            onChange={(page) => getParams(page, 'page')}
+          />
+        </div>
       )}
       <Modal
         className={classes.commentModal}
