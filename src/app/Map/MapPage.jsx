@@ -12,9 +12,13 @@ const MapPage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const center = useMemo(() => ({ lat: 42.873234, lng: 74.590920 }), []);
 
-    if (!isLoaded) return <div>Loading...</div>
+    if (!isLoaded) return (
+        <PageLayout>
+            <div className='loadingContainer'>Loading...</div>
+        </PageLayout>
+    )
 
-    console.log('onlineGuards',onlineGuards)
+    console.log('onlineGuards', onlineGuards)
     return (
         <PageLayout>
             <GoogleMap
@@ -27,7 +31,7 @@ const MapPage = () => {
                 {onlineGuards?.map(marker => (
                     <Marker
                         key={marker.id}
-                        position={{ lat: marker?.coordinates?.latitude || 33, lng: marker?.coordinates?.longitude || 33}}
+                        position={{ lat: marker?.coordinates?.latitude || 33, lng: marker?.coordinates?.longitude || 33 }}
                         onClick={() => setIsOpen(marker.id)}
                         icon={marker.status === 1 ?
                             "http://maps.google.com/mapfiles/kml/paddle/grn-stars.png" :

@@ -24,3 +24,14 @@
     margin-bottom: 50px;
     margin-left: 10px;
 }
+
+.loadingContainer{
+    width: 100%;
+    height: calc(100vh - 100px);
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: white;
+}
