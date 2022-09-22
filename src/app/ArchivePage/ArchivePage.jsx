@@ -53,17 +53,13 @@ const ArchivePage = () => {
       [type]: value
     }
     setParams(newParams)
-    // dispatch(getArchive(params));
   };
 
   return (
     <PageLayout>
 
       <div className={classes.cardContainer}>
-        {archiveList?.data
-          ?.slice()
-          .sort((a, b) => new Date(b?.createDate) - new Date(a?.createDate))
-          .map((item) => (
+        {archiveList?.data?.map((item) => (
             <ArchiveCard item={item} key={item.id} showModal={showModal} />
           ))}
       </div>
