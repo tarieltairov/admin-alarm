@@ -12,7 +12,7 @@ const signals = {
 };
 
 const ArchiveCard = ({ item, showModal }) => {
-  const { status, user, alarm, createDate, id
+  const { status, user, alarm, createDate, id, guard
   } = item;
   return (
     <Card style={{ marginBottom: '50px' }}>
@@ -24,6 +24,8 @@ const ArchiveCard = ({ item, showModal }) => {
           >
             {signals[status]}
           </span>
+          <br /><br/>
+          <h4>{`Принял вызов -  ${guard.firstName} ${guard.lastName}`}</h4>
         </h3>
         <div className={classes.comment}>
           <span>Комментарий</span>
