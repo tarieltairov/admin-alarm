@@ -47,40 +47,28 @@ const ArchivePage = () => {
     setComment("");
     setUserId(null);
   };
-  const getParams = (value, type) => {
-    const newParams = {
-      ...params,
-      [type]: value
-    }
-    setParams(newParams)
+  const getParams = (value) => {
+    setParams(value)
   };
 
   return (
     <PageLayout>
-
       <div className={classes.cardContainer}>
         {archiveList?.data?.map((item) => (
             <ArchiveCard item={item} key={item.id} showModal={showModal} />
           ))}
       </div>
 
-
       {archiveList?.count && (
         <div className={classes.paramsContainer}>
-          <Select placeholder="Лимит"  style={{ width: 120 }} onChange={(e) => getParams(e, 'take')}>
-            <Option value="disabled" disabled> Лимит</Option>
-            <Option value={10}>10</Option>
-            <Option value={15}>15</Option>
-            <Option value={20}>20</Option>
-          </Select>
-
           <Pagination
             className="pagination"
             defaultCurrent={1}
             defaultPageSize={params.take}
-            pageSize={params.take}
             total={archiveList.count}
-            onChange={(page) => getParams(page, 'page')}
+            pageSizeOptions={[10,15,20,50]}
+            showSizeChanger={true}
+            onChange={(page,size) => getParams({page, total: size})}
           />
         </div>
       )}
