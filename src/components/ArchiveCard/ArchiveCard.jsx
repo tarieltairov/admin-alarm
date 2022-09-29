@@ -25,7 +25,7 @@ const ArchiveCard = ({ item, showModal }) => {
             {signals[status]}
           </span>
           <br /><br/>
-          <h4>{`Принял вызов -  ${guard.firstName} ${guard.lastName}`}</h4>
+          <span>{`Принял вызов -  ${guard.firstName} ${guard.lastName}`}</span>
         </h3>
         <div className={classes.comment}>
           <span>Комментарий</span>
