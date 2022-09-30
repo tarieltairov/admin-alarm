@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined, SendOutlined } from "@ant-design/icons";
 import { WebSocketContext } from "../../WebSocket";
 import Modal from "antd/es/modal";
-import { setCompleteModal } from "../../store/slices/socketSlice";
+import { setCompleteModal } from "../../redux/slices/socketSlice";
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const { TextArea } = Input;
 
 const SignalsTable = ({ signals }) => {

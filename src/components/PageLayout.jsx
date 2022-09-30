@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { HomeOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/slices/authSlice";
+import { logout } from "../redux/slices/authSlice";
 const { Header, Content } = Layout;
 
 const PageLayout = ({ children }) => {

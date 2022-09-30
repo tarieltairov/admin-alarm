@@ -2,14 +2,13 @@ import { Form, Input, Button } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLogin } from "../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { fetchLogin } from "../redux/actions/authActions";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, error } = useSelector((state) => state.auth);
-
 
   useEffect(() => {
     if (isAuth) {
@@ -17,8 +16,8 @@ const LoginPage = () => {
     }
   }, [isAuth]);
 
-  const onFinish = async (values) => {
-    await dispatch(fetchLogin(values));
+  const onFinish = (values) => {
+    dispatch(fetchLogin(values));
   };
 
   return (

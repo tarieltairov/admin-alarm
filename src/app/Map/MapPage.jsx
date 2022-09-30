@@ -18,7 +18,6 @@ const MapPage = () => {
         </PageLayout>
     )
 
-    console.log('onlineGuards', onlineGuards)
     return (
         <PageLayout>
             <GoogleMap

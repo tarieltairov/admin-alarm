@@ -1,25 +1,20 @@
 import React, { useRef, useState } from "react";
 import { Table, Tag, Space, Card, Dropdown, Menu, Button, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { DownOutlined } from "@ant-design/icons";
-import {
-  getGuardList,
-  getUserList,
-  paySubscription,
-  postPay,
-} from "../../store/slices/authSlice";
 import { formattingDate } from "../../utils/dateFormatter";
 import { ColumnSearchProps } from "../columnSearchProps";
+import { getUserList, paySubscription, postPay } from "../../redux/actions/authActions";
 
-const { Column, ColumnGroup } = Table;
+const { Column} = Table;
 
 const UsersTable = ({ user, count }) => {
   const { priceList, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const pay = async (data) => {
-    await dispatch(postPay(data));
-    await dispatch(getUserList({}));
+  const pay = (data) => {
+    dispatch(postPay(data)).then(()=>{
+      dispatch(getUserList({}));
+    });
   };
 
   const menu = priceList.map(({ price, id, period }) => {

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { getUserList } from "../store/slices/authSlice";
 import { useDispatch } from "react-redux";
 
 export const ColumnSearchProps = ({ dataIndex, getUsers }) => {
@@ -9,7 +8,7 @@ export const ColumnSearchProps = ({ dataIndex, getUsers }) => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const dispatch = useDispatch();
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+  const handleSearch = (selectedKeys, dataIndex) => {
     dispatch(getUsers({ name: selectedKeys[0] }));
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);

@@ -1,9 +1,8 @@
 import React from "react";
 import { Button, Form, InputNumber } from "antd";
-import { postPrice } from "../../store/slices/authSlice";
-import { useDispatch } from "react-redux";
 
 const CreateRateForm = ({ onFinish, handleAdd }) => {
+  
   return (
     <Form name="normal-prices" className="price-form" onFinish={onFinish}>
       <h3>Добавить тариф</h3>

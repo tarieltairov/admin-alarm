@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef } from "react";
+import React, { createContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -7,8 +7,7 @@ import {
   setOrderList,
   setRequestCount,
   setRequestList,
-} from "../store/slices/socketSlice";
-
+} from "../redux/slices/socketSlice";
 
 const WebSocketContext = createContext(null);
 

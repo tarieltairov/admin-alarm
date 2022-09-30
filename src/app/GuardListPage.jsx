@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import PageLayout from "../components/PageLayout";
-import { getGuardList, postPrice } from "../store/slices/authSlice";
 import CreateGuardForm from "../components/Forms/CreateGuardForm";
 import GuardsTable from "../components/Tables/GuardsTable";
-import Loader from "../components/Loader/Loader";
+import { getGuardList } from "../redux/actions/authActions";
 
 const GuardListPage = () => {
   const { guardList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const onFinish = (values) => {
-    dispatch(postPrice(values));
-  };
+  // const onFinish = (values) => {
+  //   dispatch(postPrice(values));
+  // };
+  
+  useEffect(() => {
+    dispatch(getGuardList({}));
+  }, [dispatch]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -24,11 +27,6 @@ const GuardListPage = () => {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    dispatch(getGuardList({}));
-  }, [dispatch]);
-
-  console.log(guardList);
   return (
     <PageLayout>
       <div className={"btnCreateGuard"}>

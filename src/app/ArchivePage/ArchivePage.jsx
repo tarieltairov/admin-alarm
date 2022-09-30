@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ArchiveCard from "../../components/ArchiveCard/ArchiveCard";
 import PageLayout from "../../components/PageLayout";
-import {
-  addComment,
-  getArchive,
-} from "../../store/slices/authSlice";
-import Loader from "../../components/Loader/Loader";
 import Pagination from "antd/es/pagination";
-import { Modal, Select, Input } from "antd";
+import { Modal, Input } from "antd";
 import classes from "./ArchivePage.module.css";
+import { addComment, getArchive } from "../../redux/actions/authActions";
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 const ArchivePage = () => {
   const { archiveList } = useSelector((state) => state.auth);
@@ -35,6 +30,7 @@ const ArchivePage = () => {
     setUserId(id);
     setIsModalVisible(true);
   };
+  
   const onOk = () => {
     dispatch(addComment({ comment, userId }));
     setIsModalVisible(false);
@@ -47,6 +43,7 @@ const ArchivePage = () => {
     setComment("");
     setUserId(null);
   };
+
   const getParams = (value) => {
     setParams(value)
   };

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
-import { createGuard } from "../../store/slices/authSlice";
+import { createGuard } from "../../redux/actions/authActions";
 
 const CreateGuardForm = ({handleCancel}) => {
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ const CreateGuardForm = ({handleCancel}) => {
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       size="small"
-      // layout="vertical"
       form={form}
       autoComplete="off"
       onFinish={onFinish}
