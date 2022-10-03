@@ -8,17 +8,15 @@ import { fetchLogin } from "../redux/actions/authActions";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth, error } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, [isAuth]);
+  const { error, user } = useSelector((state) => state.auth);
 
   const onFinish = (values) => {
     dispatch(fetchLogin(values));
   };
+
+  useEffect(()=>{
+    if(user.role === "ADMIN") navigate('/');
+  },[user]);
 
   return (
     <div className="auth">

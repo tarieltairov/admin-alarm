@@ -12,7 +12,7 @@ const initialState = {
   userList: [],
   guardList: [],
   priceList: [],
-  archiveList: [],
+  archiveList: {},
 };
 
 const authSlice = createSlice({
@@ -22,6 +22,7 @@ const authSlice = createSlice({
     logout(state) {
       localStorage.removeItem("token");
       state.isAuth = false;
+      state.user = {}
     },
   },
   extraReducers: {
@@ -248,8 +249,8 @@ const authSlice = createSlice({
     [addComment.fulfilled]: (state, action) => {
       state.loading = false;
       state.archiveList.data = state.archiveList.data.map((item) => {
-        if (item.id === action.payload.id) {
-          return { ...item, comment: action.payload.comment };
+        if (item.alarm.id === action.payload.id) {
+          return { ...item, alarm: {...item.alarm,comment: action.payload.comment} };
         }
         return item;
       });

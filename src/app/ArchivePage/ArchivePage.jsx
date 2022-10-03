@@ -13,41 +13,38 @@ const ArchivePage = () => {
   const { archiveList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [alarmId, setAlarmId] = useState(null);
   const [comment, setComment] = useState();
   const [params, setParams] = useState({
     page: 1,
     take: 10
   });
-
   useEffect(() => {
     dispatch(getArchive(params));
   }, [params]);
-
   const showModal = (id) => {
-    const oldComment = archiveList.data.find((item) => item.id === id).comment;
+    console.log(archiveList?.data)
+    const oldComment = archiveList?.data?.find(({alarm}) => alarm.id === id)?.alarm.comment;
+    console.log('oldComment', oldComment)
     setComment(oldComment);
-    setUserId(id);
+    setAlarmId(id);
     setIsModalVisible(true);
   };
-  
   const onOk = () => {
-    dispatch(addComment({ comment, userId }));
+    console.log({comment,alarmId })
+    dispatch(addComment({ comment, alarmId }));
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
-
   const handleCancel = () => {
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
-
   const getParams = (value) => {
     setParams(value)
   };
-
   return (
     <PageLayout>
       <div className={classes.cardContainer}>
@@ -55,7 +52,6 @@ const ArchivePage = () => {
             <ArchiveCard item={item} key={item.id} showModal={showModal} />
           ))}
       </div>
-
       {archiveList?.count && (
         <div className={classes.paramsContainer}>
           <Pagination
@@ -91,5 +87,4 @@ const ArchivePage = () => {
     </PageLayout>
   );
 };
-
 export default ArchivePage;

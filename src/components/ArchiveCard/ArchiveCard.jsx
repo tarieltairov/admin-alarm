@@ -33,7 +33,7 @@ const ArchiveCard = ({ item, showModal }) => {
             <p style={{ color: !alarm.comment && 'lightgray' }}>{alarm.comment ? alarm.comment : "оставьте комментарий"}</p>
           </div>
         </div>
-        <button className={classes.editBtn} onClick={() => showModal(id)}>
+        <button className={classes.editBtn} onClick={() => showModal(alarm.id)}>
           <EditOutlined />
         </button>
       </div>
