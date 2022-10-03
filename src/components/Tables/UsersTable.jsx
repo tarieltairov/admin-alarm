@@ -5,31 +5,38 @@ import { formattingDate } from "../../utils/dateFormatter";
 import { ColumnSearchProps } from "../columnSearchProps";
 import { getUserList, paySubscription, postPay } from "../../redux/actions/authActions";
 
-const { Column} = Table;
+const { Column } = Table;
 
 const UsersTable = ({ user, count }) => {
   const { priceList, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [page, setPage] = useState(null)
+  // const pay = (data) => {
+  //   dispatch(postPay(data)).then(()=>{
+  //     dispatch(getUserList({}));
+  //   });
+  // };
 
-  const pay = (data) => {
-    dispatch(postPay(data)).then(()=>{
-      dispatch(getUserList({}));
-    });
+  // const menu = priceList.map(({ price, id, period }) => {
+  //   return {
+  //     label: (
+  //       <div onClick={() => pay({ userId: user.id, cash: price, priceId: id })}>
+  //         Оплатить за {period} дней {price} сом
+  //       </div>
+  //     ),
+  //     key: id,
+  //   };
+  // });
+
+  const changePage = (arg) => {
+    setPage(arg)
+    dispatch(getUserList({ page }));
   };
 
-  const menu = priceList.map(({ price, id, period }) => {
-    return {
-      label: (
-        <div onClick={() => pay({ userId: user.id, cash: price, priceId: id })}>
-          Оплатить за {period} дней {price} сом
-        </div>
-      ),
-      key: id,
-    };
-  });
-
-  const changePage = (page) => {
-    dispatch(getUserList({ page }));
+  const buySubscription = (id) => {
+    dispatch(paySubscription(id)).then(() => {
+      dispatch(getUserList({ page }));
+    });
   };
 
   return (
@@ -104,7 +111,7 @@ const UsersTable = ({ user, count }) => {
             const lastSubIndex = purchases.lastIndexOf(allSubscribes);
             const lastSubscribe = purchases[lastSubIndex];
             return !lastSubscribe ? (
-              <a onClick={() => dispatch(paySubscription(id))}>Оплатить</a>
+              <a onClick={() => buySubscription(id)}>Оплатить</a>
             ) : (
               <p>
                 Оплачено до&nbsp;

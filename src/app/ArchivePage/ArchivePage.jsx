@@ -23,15 +23,12 @@ const ArchivePage = () => {
     dispatch(getArchive(params));
   }, [params]);
   const showModal = (id) => {
-    console.log(archiveList?.data)
-    const oldComment = archiveList?.data?.find(({alarm}) => alarm.id === id)?.alarm.comment;
-    console.log('oldComment', oldComment)
+    const oldComment = archiveList.data.find(({alarm}) => alarm.id === id).alarm.comment;
     setComment(oldComment);
     setAlarmId(id);
     setIsModalVisible(true);
   };
   const onOk = () => {
-    console.log({comment,alarmId })
     dispatch(addComment({ comment, alarmId }));
     setIsModalVisible(false);
     setComment("");

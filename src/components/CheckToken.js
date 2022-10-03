@@ -18,7 +18,7 @@ const CheckToken = ({ children }) => {
         top: 50,
         duration: 3,
         rtl: true,
-        message: "Необходимо повторная авторизовация!",
+        message: "Необходима повторная авторизовация!",
       });
     }
   }, [localStorage.getItem(STORAGE_KEYS.token)]);
