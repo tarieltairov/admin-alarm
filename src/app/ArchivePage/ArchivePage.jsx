@@ -6,7 +6,6 @@ import {
   addComment,
   getArchive,
 } from "../../store/slices/authSlice";
-import Loader from "../../components/Loader/Loader";
 import Pagination from "antd/es/pagination";
 import { Modal, Select, Input } from "antd";
 import classes from "./ArchivePage.module.css";
@@ -18,7 +17,7 @@ const ArchivePage = () => {
   const { archiveList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [alarmId, setAlarmId] = useState(null);
   const [comment, setComment] = useState();
   const [params, setParams] = useState({
     page: 1,
@@ -30,22 +29,22 @@ const ArchivePage = () => {
   }, [params]);
 
   const showModal = (id) => {
-    const oldComment = archiveList.data.find((item) => item.id === id).comment;
+    const oldComment = archiveList.data.find(({alarm}) => alarm.id === id).alarm.comment;
     setComment(oldComment);
-    setUserId(id);
+    setAlarmId(id);
     setIsModalVisible(true);
   };
   const onOk = () => {
-    dispatch(addComment({ comment, userId }));
+    dispatch(addComment({ comment, alarmId }));
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
   const getParams = (value) => {
     setParams(value)

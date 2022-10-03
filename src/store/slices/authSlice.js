@@ -216,6 +216,8 @@ export const getArchive = createAsyncThunk(
         },
         params
       });
+
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -263,11 +265,11 @@ export const paySubscription = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   "auth/addComment",
-  async function ({ userId, comment }, { rejectWithValue }) {
+  async function ({ alarmId, comment }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `${URL}/alarm/comment/${userId}`,
+        `${URL}/alarm/comment/${alarmId}`,
         {
           comment,
         },
@@ -517,9 +519,10 @@ const authSlice = createSlice({
     },
     [addComment.fulfilled]: (state, action) => {
       state.loading = false;
+
       state.archiveList.data = state.archiveList.data.map((item) => {
-        if (item.id === action.payload.id) {
-          return { ...item, comment: action.payload.comment };
+        if (item.alarm.id === action.payload.id) {
+          return { ...item, alarm: {...item.alarm,comment: action.payload.comment} };
         }
         return item;
       });
