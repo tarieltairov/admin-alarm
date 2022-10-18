@@ -202,7 +202,7 @@ export const paySubscription = createAsyncThunk(
     try {
       const { data } = await reqFunc({
         type: POST,
-        url: `/purchase/subscription/${id}`,
+        url: `/purchase/subscription/standard/1`,
         body: {},
       });
       return data;
