@@ -7,13 +7,14 @@ const UserCard = ({ user }) => {
   const { priceList } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const pay = async (data) => {
-    await dispatch(postPay(data));
-    await dispatch(getUserList());
-  }
+  const pay = (data) => {
+    dispatch(postPay(data)).then(()=>{
+      dispatch(getUserList());
+    });
+  };
 
   return (
-    <Card
+    <Card 
       title={`${user.email}`}
     >
       <h3>Name: {user.firstName}</h3>

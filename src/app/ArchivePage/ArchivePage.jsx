@@ -2,67 +2,65 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ArchiveCard from "../../components/ArchiveCard/ArchiveCard";
 import PageLayout from "../../components/PageLayout";
-import {
-  addComment,
-  fetchLogin,
-  getArchive,
-} from "../../store/slices/authSlice";
-import Loader from "../../components/Loader/Loader";
 import Pagination from "antd/es/pagination";
-import { Modal } from "antd";
-import { Input } from "antd";
+import { Modal, Input } from "antd";
 import classes from "./ArchivePage.module.css";
+import { addComment, getArchive } from "../../redux/actions/authActions";
 
 const { TextArea } = Input;
+
 const ArchivePage = () => {
   const { archiveList } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [alarmId, setAlarmId] = useState(null);
   const [comment, setComment] = useState();
+  const [params, setParams] = useState({
+    page: 1,
+    take: 10
+  });
   useEffect(() => {
-    dispatch(getArchive({}));
-  }, []);
-
+    dispatch(getArchive(params));
+  }, [params]);
   const showModal = (id) => {
-    const oldComment = archiveList.data.find((item) => item.id === id).comment;
+    const oldComment = archiveList.data.find(({alarm}) => alarm.id === id).alarm.comment;
     setComment(oldComment);
-    setUserId(id);
+    setAlarmId(id);
     setIsModalVisible(true);
   };
   const onOk = () => {
-    dispatch(addComment({ comment, userId }));
+    dispatch(addComment({ comment, alarmId }));
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
-
   const handleCancel = () => {
     setIsModalVisible(false);
     setComment("");
-    setUserId(null);
+    setAlarmId(null);
   };
-  const changePage = (page) => {
-    dispatch(getArchive({ page }));
+  const getParams = (value) => {
+    setParams(value)
   };
-
   return (
     <PageLayout>
-      {archiveList?.data
-        ?.slice()
-        .sort((a, b) => new Date(b?.createDate) - new Date(a?.createDate))
-        .map((item) => (
-          <ArchiveCard item={item} key={item.id} showModal={showModal} />
-        ))}
-
+      <div className={classes.cardContainer}>
+        {archiveList?.data?.map((item) => (
+            <ArchiveCard item={item} key={item.id} showModal={showModal} />
+          ))}
+      </div>
       {archiveList?.count && (
-        <Pagination
-          className="pagination"
-          defaultCurrent={1}
-          defaultPageSize={10}
-          total={archiveList.count}
-          onChange={(page) => changePage(page)}
-        />
+        <div className={classes.paramsContainer}>
+          <Pagination
+            className="pagination"
+            defaultCurrent={1}
+            defaultPageSize={params.take}
+            total={archiveList.count}
+            pageSizeOptions={[10,15,20,50]}
+            showSizeChanger={true}
+            onChange={(page,size) => getParams({page, total: size})}
+          />
+        </div>
       )}
       <Modal
         className={classes.commentModal}
@@ -86,5 +84,4 @@ const ArchivePage = () => {
     </PageLayout>
   );
 };
-
 export default ArchivePage;

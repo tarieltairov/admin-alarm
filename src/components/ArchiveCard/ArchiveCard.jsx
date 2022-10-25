@@ -12,10 +12,10 @@ const signals = {
 };
 
 const ArchiveCard = ({ item, showModal }) => {
-  const { status, user, coordinates, noteFromUser, createDate, comment, id
+  const { status, user, alarm, createDate, id, guard
   } = item;
   return (
-    <Card>
+    <Card style={{ marginBottom: '50px' }}>
       <div className={classes.info}>
         <h3>
           {`Сигнал от ${user?.firstName} ${user?.lastName}. Статус `}
@@ -24,24 +24,24 @@ const ArchiveCard = ({ item, showModal }) => {
           >
             {signals[status]}
           </span>
+          <br /><br/>
+          <span>{`Принял вызов -  ${guard.firstName} ${guard.lastName}`}</span>
         </h3>
-        {comment && (
-          <div className={classes.comment}>
-            <span>Комментарий</span>
-            <div className={classes.commentValue}>
-              <p>{comment}</p>
-            </div>
+        <div className={classes.comment}>
+          <span>Комментарий</span>
+          <div className={classes.commentValue}>
+            <p style={{ color: !alarm.comment && 'lightgray' }}>{alarm.comment ? alarm.comment : "оставьте комментарий"}</p>
           </div>
-        )}
-        <button className={classes.editBtn} onClick={() => showModal(id)}>
+        </div>
+        <button className={classes.editBtn} onClick={() => showModal(alarm.id)}>
           <EditOutlined />
         </button>
       </div>
 
       <div>
-        <p>{`Координаты - ${coordinates.latitude} ${coordinates.longitude}`}</p>
+        <p>{`Координаты - ${alarm.coordinates.latitude}, ${alarm.coordinates.longitude}`}</p>
         <p style={{ marginTop: '10px' }} >{`Дата и время -  ${new Date(createDate).toLocaleString()}`}</p>
-        <Rate disabled={true} count={5} value={noteFromUser || 0} />
+        <Rate disabled={true} count={5} value={alarm.noteFromUser || 0} />
       </div>
     </Card>
   );

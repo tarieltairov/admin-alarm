@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import { Table, Tag, Space } from "antd";
+import React  from "react";
+import { Table, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUser,
-  getGuardList,
-  getUserList,
-  postPay,
-  restoreUser,
-} from "../../store/slices/authSlice";
 import { ColumnSearchProps } from "../columnSearchProps";
+import { deleteUser, getGuardList, restoreUser } from "../../redux/actions/authActions";
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 const GuardsTable = ({ user, count }) => {
-  const { priceList, loading } = useSelector((state) => state.auth);
+  const {loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const changePage = (page) => {

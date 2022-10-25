@@ -1,7 +1,18 @@
-.commentModal {
-  /*display: none;*/
-}
 :global(.ant-modal-header),
 :global(.ant-modal-footer) {
   border: none !important;
+}
+
+.cardContainer {
+  width: 100%;
+  height: calc(100vh - 210px);
+  overflow-y: scroll;
+  padding-right: 20px;
+}
+
+.paramsContainer{
+  width: 100%;
+  display: flex;
+  margin-bottom: 50px;
+  margin-top: 20px;
 }

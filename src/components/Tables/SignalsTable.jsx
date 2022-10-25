@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined, SendOutlined } from "@ant-design/icons";
 import { WebSocketContext } from "../../WebSocket";
 import Modal from "antd/es/modal";
-import { setCompleteModal } from "../../store/slices/socketSlice";
+import { setCompleteModal } from "../../redux/slices/socketSlice";
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const { TextArea } = Input;
 
 const SignalsTable = ({ signals }) => {
@@ -36,14 +36,16 @@ const SignalsTable = ({ signals }) => {
   const check = (onlineGuards) => {
     if (onlineGuards?.length) {
       const menu = onlineGuards?.map((item) => {
-        return {
-          label: (
-            <div key={item?.id}>
-              {item?.firstName} {item?.lastName}
-            </div>
-          ),
-          key: item?.id,
-        };
+        if (item.status !== 0) {
+          return {
+            label: (
+              <div key={item?.id}>
+                {item?.firstName} {item?.lastName}
+              </div>
+            ),
+            key: item?.id,
+          };
+        }
       });
       return menu;
     } else {

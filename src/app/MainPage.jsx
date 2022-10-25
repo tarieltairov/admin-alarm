@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button, InputNumber, Card, Space, notification } from "antd";
+import React, { useState } from "react";
+import { Button, Card, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import PageLayout from "../components/PageLayout";
-import { getPrice, postPrice } from "../store/slices/authSlice";
 import { formattingDate } from "../utils/dateFormatter";
 import Modal from "antd/es/modal";
 import CreateRateForm from "../components/Forms/CreateRateForm";
 import Loader from "../components/Loader/Loader";
 import Notification from "../components/Notification";
+import { postPrice } from "../redux/actions/authActions";
 
 const MainPage = () => {
   const { priceList, loading } = useSelector((state) => state.auth);
@@ -25,11 +25,6 @@ const MainPage = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  // useEffect(() => {
-  //   dispatch(getPrice());
-
-  // }, [dispatch]);
 
   return (
     <PageLayout>
@@ -50,7 +45,7 @@ const MainPage = () => {
           ) : (
             <Loader />
           )}
-          <Notification/>
+          <Notification />
         </div>
         <h3>Текущие тарифы</h3>
         <Space
@@ -64,7 +59,6 @@ const MainPage = () => {
             <Card
               style={{ width: "100%" }}
               title={`Тариф на ${price.period} дней`}
-              // extra={<a href="#">Обновить</a>}
               key={price.id}
             >
               <p>
