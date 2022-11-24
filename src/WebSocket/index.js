@@ -66,7 +66,7 @@ export default ({ children }) => {
 
   if (isAuth && !socket.current) {
     const token = localStorage.getItem("token");
-    socket.current = new WebSocket("ws://discoverystudio.xyz:6969", token);
+    socket.current = new WebSocket("ws://176.126.164.61:8080", token);
     socket.current.onmessage = (event) => {
       const { data, event: currentEvent } = JSON.parse(event.data);
 
